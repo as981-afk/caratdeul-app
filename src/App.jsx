@@ -1,7 +1,14 @@
-import { useState, useCallback, useEffect, useMemo, useRef, lazy, Suspense } from "react";
+import { useState, useCallback, useEffect, useMemo, useRef, Suspense } from "react";
+import { lazyWithRetry } from "./utils/lazyWithRetry";
 import { useLocalStorageList } from "./hooks/useLocalStorageList";
-import { loadCurrentUser, saveCurrentUser } from "./utils/auth";
 import { setActiveProfileId } from "./utils/profiles";
+import {
+  getCurrentAccount,
+  loadCachedAccount,
+  onAccountChange,
+  signOutAccount,
+} from "./utils/supabaseAuth";
+import { SyncProvider } from "./context/SyncContext.jsx";
 import { CW_KEY, RECENT_KEY, removeFromCW } from "./utils/watchHistory";
 import { scrollToIdWhenReady } from "./utils/format";
 import SessionContext from "./context/SessionContext.jsx";
@@ -36,31 +43,31 @@ import "./App.css";
 // Everything below the fold — plus the catalogues they render — is split into
 // its own chunks and streamed in behind a skeleton, so the first paint only
 // waits for the shell, the hero, and the member strip.
-const LatestVideo = lazy(() => import("./components/LatestVideo"));
-const MyListRow = lazy(() => import("./components/MyListRow"));
-const MyListPage = lazy(() => import("./components/MyListPage"));
-const GoSeRow = lazy(() => import("./components/GoSeRow"));
-const ConcertsRow = lazy(() => import("./components/ConcertsRow"));
-const SideTracksRow = lazy(() => import("./components/SideTracksRow"));
-const MVRow = lazy(() => import("./components/MVRow"));
-const ChoreographyRow = lazy(() => import("./components/ChoreographyRow"));
-const ChoreographyPage = lazy(() => import("./components/ChoreographyPage"));
-const BrowseVideosPage = lazy(() => import("./components/BrowseVideosPage"));
-const VideosPage = lazy(() => import("./components/VideosPage"));
-const SearchResults = lazy(() => import("./components/SearchResults"));
-const MembersPage = lazy(() => import("./components/MembersPage"));
-const MemberPage = lazy(() => import("./components/MemberPage"));
-const EraPage = lazy(() => import("./components/EraPage"));
-const PreferencesPage = lazy(() => import("./components/PreferencesPage"));
-const QuizPage = lazy(() => import("./components/QuizPage"));
-const GoalsPage = lazy(() => import("./components/GoalsPage"));
-const BadgesPage = lazy(() => import("./components/BadgesPage"));
-const CaratPick = lazy(() => import("./components/CaratPick"));
-const FancamFocus = lazy(() => import("./components/FancamFocus"));
-const MemberPlaylistRow = lazy(() => import("./components/MemberPlaylistRow"));
+const LatestVideo = lazyWithRetry(() => import("./components/LatestVideo"));
+const MyListRow = lazyWithRetry(() => import("./components/MyListRow"));
+const MyListPage = lazyWithRetry(() => import("./components/MyListPage"));
+const GoSeRow = lazyWithRetry(() => import("./components/GoSeRow"));
+const ConcertsRow = lazyWithRetry(() => import("./components/ConcertsRow"));
+const SideTracksRow = lazyWithRetry(() => import("./components/SideTracksRow"));
+const MVRow = lazyWithRetry(() => import("./components/MVRow"));
+const ChoreographyRow = lazyWithRetry(() => import("./components/ChoreographyRow"));
+const ChoreographyPage = lazyWithRetry(() => import("./components/ChoreographyPage"));
+const BrowseVideosPage = lazyWithRetry(() => import("./components/BrowseVideosPage"));
+const VideosPage = lazyWithRetry(() => import("./components/VideosPage"));
+const SearchResults = lazyWithRetry(() => import("./components/SearchResults"));
+const MembersPage = lazyWithRetry(() => import("./components/MembersPage"));
+const MemberPage = lazyWithRetry(() => import("./components/MemberPage"));
+const EraPage = lazyWithRetry(() => import("./components/EraPage"));
+const PreferencesPage = lazyWithRetry(() => import("./components/PreferencesPage"));
+const QuizPage = lazyWithRetry(() => import("./components/QuizPage"));
+const GoalsPage = lazyWithRetry(() => import("./components/GoalsPage"));
+const BadgesPage = lazyWithRetry(() => import("./components/BadgesPage"));
+const CaratPick = lazyWithRetry(() => import("./components/CaratPick"));
+const FancamFocus = lazyWithRetry(() => import("./components/FancamFocus"));
+const MemberPlaylistRow = lazyWithRetry(() => import("./components/MemberPlaylistRow"));
 // The command palette is only fetched the first time it is opened (Ctrl/Cmd+K
 // or the navbar hint button), so its chunk stays out of the initial load.
-const CommandPalette = lazy(() => import("./components/CommandPalette"));
+const CommandPalette = lazyWithRetry(() => import("./components/CommandPalette"));
 
 // Query string that returns to the plain home view — the same reset a Navbar
 // link performs (clear the search + filters, drop the view). Shared with the
@@ -80,26 +87,76 @@ const CLEAR_VIEW = {
   chsort: "",
 };
 
+// Shown for the brief moment the Supabase session is being restored on boot.
+// Reuses the login screen shell so there is no flash of unstyled content.
+function BootSplash() {
+  return (
+    <div className="login-page" role="status" aria-live="polite">
+      <div className="login-bg">
+        <div className="login-glow login-glow--rose"></div>
+        <div className="login-glow login-glow--serenity"></div>
+      </div>
+      <div className="login-card">
+        <div className="login-logo">CARATFLIX</div>
+      </div>
+    </div>
+  );
+}
+
 // Top-level gate. The account (login identity) comes first; a profile must then
 // be chosen before anything protected renders — so a signed-in visitor always
 // passes through "Who's watching?".
 export default function App() {
-  const [user, setUser] = useState(loadCurrentUser);
+  // `account` is `{ id, username, email }` or null when signed out. The session
+  // is restored asynchronously from Supabase, so `undefined` means "still
+  // loading" while `null` means signed out.
+  const [account, setAccount] = useState(() =>
+    // Render immediately from the cached account (if any); the effect below
+    // validates it against the real Supabase session.
+    loadCachedAccount() ?? undefined
+  );
 
-  const handleLogin = (username) => setUser(username);
-  const handleLogout = () => {
-    // Forget the chosen profile so the next login starts at the picker.
-    setActiveProfileId(null);
-    saveCurrentUser(null);
-    setUser(null);
+  // Restore the persisted session (per device) on boot and follow auth changes —
+  // sign-in/out, token refresh, or another tab. Each device keeps its own
+  // session, so signing out here never affects the user's other devices.
+  useEffect(() => {
+    let alive = true;
+    getCurrentAccount()
+      .then((next) => { if (alive) setAccount(next ?? null); })
+      .catch(() => {
+        // Network hiccup: keep the cached account (offline boot) instead of
+        // dropping the user back to the login screen.
+        if (alive) setAccount((current) => (current === undefined ? null : current));
+      });
+    const unsubscribe = onAccountChange((next) => setAccount(next));
+    return () => {
+      alive = false;
+      unsubscribe();
+    };
+  }, []);
+
+  const handleLogin = (nextAccount) => {
+    setAccount(nextAccount);
   };
 
+  const handleLogout = async () => {
+    // Forget the chosen profile so the next login starts at the picker.
+    setActiveProfileId(null);
+    // Only sign the *current device* out — other devices keep their sessions.
+    await signOutAccount();
+    setAccount(null);
+  };
+
+  if (account === undefined) return <BootSplash />;
+
+  const user = account ? account.username : null;
+
   return (
-    // key={user} remounts the profile store per account, so profiles and their
-    // data never leak between demo accounts.
-    <ProfileProvider key={user || "anon"} account={user}>
+    // key={account.id} remounts the profile store per account, so profiles and
+    // their data never leak between accounts.
+    <ProfileProvider key={account?.id || "anon"} accountId={account?.id || null} accountName={user}>
       <ThemeProvider>
-        {user ? (
+        {account ? (
           <ProfileRouter user={user} onLogout={handleLogout} />
         ) : (
           <AuthFlow onLogin={handleLogin} />
@@ -112,21 +169,25 @@ export default function App() {
 // Requires BOTH a login (rendered by App) and a selected profile. Without a
 // profile the picker takes over; with one, the profile-scoped app renders.
 function ProfileRouter({ user, onLogout }) {
-  const { activeProfile } = useProfiles();
+  const { activeProfile, profilesLoading, accountId } = useProfiles();
+
+  if (profilesLoading) return <BootSplash />;
 
   if (!activeProfile) {
     return <ProfilePicker onLogout={onLogout} />;
   }
 
   return (
-    <FavoritesProvider user={activeProfile.id}>
-      <AppContent
-        key={activeProfile.id}
-        user={user}
-        profileId={activeProfile.id}
-        onLogout={onLogout}
-      />
-    </FavoritesProvider>
+    <SyncProvider accountId={accountId} profileId={activeProfile.id}>
+      <FavoritesProvider user={activeProfile.id}>
+        <AppContent
+          key={activeProfile.id}
+          user={user}
+          profileId={activeProfile.id}
+          onLogout={onLogout}
+        />
+      </FavoritesProvider>
+    </SyncProvider>
   );
 }
 

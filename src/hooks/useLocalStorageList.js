@@ -127,5 +127,16 @@ export function useLocalStorageList({ user, key, separator = "-", value = () => 
     return () => window.removeEventListener("storage", onStorage);
   }, [storageKey, resolveLegacy, user, refresh]);
 
+  // The Supabase sync layer just replaced this key with data pulled from the
+  // server (same tab, so no `storage` event). Re-read it.
+  useEffect(() => {
+    const onApplied = (e) => {
+      const keys = e.detail?.keys;
+      if (!keys || keys.includes(storageKey)) refresh();
+    };
+    window.addEventListener("caratflix:sync-applied", onApplied);
+    return () => window.removeEventListener("caratflix:sync-applied", onApplied);
+  }, [storageKey, refresh]);
+
   return [items, refresh, mutate];
 }

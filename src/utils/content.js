@@ -11,7 +11,7 @@ import { GOING_SEVENTEEN } from "../data/GOING_SEVENTEEN";
 import { NANA_TOUR } from "../data/NANA_TOUR";
 import { CONCERTS } from "../data/CONCERTS";
 import { SIDE_TRACKS } from "../data/SIDE_TRACKS";
-import { CHOREOGRAPHY } from "../data/CHOREOGRAPHY";
+import { CHOREO_VIDEOS } from "./choreoVideos.js";
 import { MEMBERS } from "../data/MEMBERS";
 import { ytId } from "./format.js";
 import {
@@ -31,7 +31,7 @@ export const CONTENT_TYPES = [
   { value: "nana", label: "Nana Tour", group: "Nana Tour", badge: "Episode", modal: "video", items: NANA_TOUR },
   { value: "concert", label: "Concert", group: "Concerts", badge: "Concert", modal: "video", items: CONCERTS },
   { value: "song", label: "Song", group: "Songs", badge: "Song", modal: "mv", items: SIDE_TRACKS },
-  { value: "choreo", label: "Choreography", group: "Choreography", badge: "Choreo", modal: "video", items: CHOREOGRAPHY },
+  { value: "choreo", label: "Choreography", group: "Choreography", badge: "Choreo", modal: "video", items: CHOREO_VIDEOS },
 ];
 
 // Members credited by an item. Catalogues normally name their performers as

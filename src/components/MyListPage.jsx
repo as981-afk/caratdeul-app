@@ -17,7 +17,7 @@ import { MVS } from "../data/MVS";
 import { GOING_SEVENTEEN } from "../data/GOING_SEVENTEEN";
 import { CONCERTS } from "../data/CONCERTS";
 import { SIDE_TRACKS } from "../data/SIDE_TRACKS";
-import { CHOREOGRAPHY } from "../data/CHOREOGRAPHY";
+import { CHOREO_VIDEOS } from "../utils/choreoVideos";
 import { CHANNEL_VIDEOS } from "../utils/channelVideos";
 import "./rows.css";
 import "./MyListRow.css";
@@ -33,7 +33,7 @@ function collectSaved(favs) {
     { type: "video", items: NANA_TOUR },
     { type: "video", items: CONCERTS },
     { type: "video", items: SIDE_TRACKS },
-    { type: "choreo", items: CHOREOGRAPHY },
+    { type: "choreo", items: CHOREO_VIDEOS },
     { type: "video", items: CHANNEL_VIDEOS },
   ];
   const videos = videoSections.flatMap(({ type, items }) =>

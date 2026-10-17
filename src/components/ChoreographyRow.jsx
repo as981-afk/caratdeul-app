@@ -9,7 +9,7 @@ import { pressable, ytThumb } from "../utils/format";
 import { FAV_VIDEOS, favIdFor, isFav } from "../utils/favorites";
 import { applyRowControls, groupValues, videoKeyFor } from "../utils/rowControls";
 import { choreoTypeLabel } from "../utils/choreography";
-import { CHOREOGRAPHY } from "../data/CHOREOGRAPHY";
+import { CHOREO_VIDEOS } from "../utils/choreoVideos";
 import "./rows.css";
 
 // Home row for the choreography catalogue. Same card, favourite, progress and
@@ -18,7 +18,7 @@ import "./rows.css";
 //
 // The catalogue is imported here (not in App.jsx) so Vite can split it out of
 // the main bundle when this row is lazy-loaded.
-export function ChoreographyRow({ onWatchEnd, onOpenAll, onWatchStart, items = CHOREOGRAPHY }) {
+export function ChoreographyRow({ onWatchEnd, onOpenAll, onWatchStart, items = CHOREO_VIDEOS }) {
   const [active, setActive] = useState(null);
   const [sort, setSort] = useState("default");
   const [status, setStatus] = useState("all");

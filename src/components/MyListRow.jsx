@@ -17,7 +17,7 @@ import { MVS } from "../data/MVS";
 import { GOING_SEVENTEEN } from "../data/GOING_SEVENTEEN";
 import { CONCERTS } from "../data/CONCERTS";
 import { SIDE_TRACKS } from "../data/SIDE_TRACKS";
-import { CHOREOGRAPHY } from "../data/CHOREOGRAPHY";
+import { CHOREO_VIDEOS } from "../utils/choreoVideos";
 import { choreoTypeLabel } from "../utils/choreography";
 import { CHANNEL_VIDEOS } from "../utils/channelVideos";
 import "./rows.css";
@@ -31,7 +31,7 @@ export function MyListRow({ onWatchEnd, onOpenList }) {
   const favMVs = MVS.filter((m) => isFav(favs, FAV_VIDEOS, favIdFor(m)));
   const favGoSe = GOING_SEVENTEEN.filter((g) => isFav(favs, FAV_VIDEOS, favIdFor(g)));
   const favSongs = SIDE_TRACKS.filter((s) => isFav(favs, FAV_VIDEOS, favIdFor(s)));
-  const favChoreo = CHOREOGRAPHY.filter((c) => isFav(favs, FAV_VIDEOS, favIdFor(c)));
+  const favChoreo = CHOREO_VIDEOS.filter((c) => isFav(favs, FAV_VIDEOS, favIdFor(c)));
   const favChannel = CHANNEL_VIDEOS.filter((v) => isFav(favs, FAV_VIDEOS, favIdFor(v)));
   const favOthers = [...NANA_TOUR, ...CONCERTS].filter((c) => isFav(favs, FAV_VIDEOS, favIdFor(c)));
 

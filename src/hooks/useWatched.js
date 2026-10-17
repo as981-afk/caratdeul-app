@@ -34,6 +34,17 @@ export function useWatched(user) {
     return () => window.removeEventListener("storage", onStorage);
   }, [user, refreshWatched]);
 
+  // The Supabase sync layer replaced this key with server data — re-read it.
+  useEffect(() => {
+    const key = watchedKeyFor(user);
+    const onApplied = (e) => {
+      const keys = e.detail?.keys;
+      if (!keys || keys.includes(key)) refreshWatched();
+    };
+    window.addEventListener("caratflix:sync-applied", onApplied);
+    return () => window.removeEventListener("caratflix:sync-applied", onApplied);
+  }, [user, refreshWatched]);
+
   const api = useMemo(() => {
     const progressFor = (videoId) => {
       const rec = watched[videoId];

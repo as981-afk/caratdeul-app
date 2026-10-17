@@ -1,0 +1,22 @@
+{
+  "name": "CARATFLIX",
+  "short_name": "CARATFLIX",
+  "description": "A demo streaming UI for SEVENTEEN content.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0a0b12",
+  "theme_color": "#0a0b12",
+  "categories": ["entertainment", "music"],
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "My List", "url": "/#my-list" },
+    { "name": "Continue Watching", "url": "/#continue-watching" }
+  ]
+}

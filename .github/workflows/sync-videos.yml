@@ -1,0 +1,46 @@
+name: Sync channel videos
+
+# Keeps src/data/youtubeVideos.json up to date without anyone running the sync by
+# hand. Set YOUTUBE_API_KEY under Settings -> Secrets and variables -> Actions;
+# without it the job still succeeds, via the script's keyless RSS fallback.
+
+on:
+  schedule:
+    # Every 6 hours (offset from the hour so we are not fighting every other cron).
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-videos
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # No `npm ci`: the script only uses Node's built-in fetch.
+      - name: Sync uploads
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+        run: node scripts/sync-youtube.mjs
+
+      - name: Commit the refreshed list
+        run: |
+          if git diff --quiet -- src/data/youtubeVideos.json; then
+            echo "Nothing changed — already up to date."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/youtubeVideos.json
+          git commit -m "chore: refresh channel videos"
+          git push

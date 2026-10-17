@@ -1,0 +1,178 @@
+// Choreography catalogue: the performance-first side of the archive — dance
+// practices, dance versions, stage/performance clips and individual fancams.
+//
+// Item shape mirrors the MV catalogue (title / sub / c1 / c2 / url / year), so
+// the shared cards, modals and watch-progress plumbing all work unchanged, and
+// adds the fields the choreography views filter on:
+//
+//   type    "practice" | "dance-version" | "performance" | "fancam"
+//   song    the track the clip performs
+//   members member ids (see utils/memberMatch.js); an empty array means the
+//           full group. `sub` stays the display label used by the member chips.
+//   era     an id from data/ERAS.js, so a clip can be grouped by chapter
+//
+// TODO(video-ids): every `url` below is a deliberately invalid placeholder.
+// Swap the `TODO_CHOREO_*` ids for the real YouTube ids before this ships —
+// they are fake on purpose so nothing is embedded (or mistaken for a real
+// clip) until the catalogue is filled in.
+
+export const CHOREOGRAPHY = [
+  {
+    id: "super-practice",
+    title: "손오공 (Super) — Dance Practice",
+    sub: "SEVENTEEN",
+    song: "Super",
+    type: "practice",
+    members: [],
+    era: "fml",
+    year: "2023",
+    c1: "#c25a0a",
+    c2: "#4a2000",
+    url: "https://www.youtube.com/watch?v=TODO_CHOREO_SUPER_PRACTICE",
+  },
+  {
+    id: "maestro-dance-version",
+    title: "Maestro — Dance Version",
+    sub: "SEVENTEEN",
+    song: "Maestro",
+    type: "dance-version",
+    members: [],
+    era: "17-is-right-here",
+    year: "2024",
+    c1: "#3a3ac2",
+    c2: "#0e0e4a",
+    url: "https://www.youtube.com/watch?v=TODO_CHOREO_MAESTRO_DANCE",
+  },
+  {
+    id: "god-of-music-practice",
+    title: "음악의 신 (God of Music) — Dance Practice",
+    sub: "SEVENTEEN",
+    song: "God of Music",
+    type: "practice",
+    members: [],
+    era: "seventeenth-heaven",
+    year: "2023",
+    c1: "#c2a03a",
+    c2: "#4a3a0e",
+    url: "https://www.youtube.com/watch?v=TODO_CHOREO_GOD_OF_MUSIC_PRACTICE",
+  },
+  {
+    id: "hot-dance-version",
+    title: "HOT — Dance Version",
+    sub: "SEVENTEEN",
+    song: "HOT",
+    type: "dance-version",
+    members: [],
+    era: "face-the-sun",
+    year: "2022",
+    c1: "#c27a0a",
+    c2: "#4a2a00",
+    url: "https://www.youtube.com/watch?v=TODO_CHOREO_HOT_DANCE",
+  },
+  {
+    id: "dont-wanna-cry-dance-version",
+    title: "Don't Wanna Cry — Dance Version",
+    sub: "SEVENTEEN",
+    song: "Don't Wanna Cry",
+    type: "dance-version",
+    members: [],
+    era: "al1",
+    year: "2017",
+    c1: "#3a5ac2",
+    c2: "#0e1a4a",
+    url: "https://www.youtube.com/watch?v=TODO_CHOREO_DONT_WANNA_CRY_DANCE",
+  },
+  {
+    id: "very-nice-performance",
+    title: "아주 NICE (Very Nice) — Performance",
+    sub: "SEVENTEEN",
+    song: "Very Nice",
+    type: "performance",
+    members: [],
+    era: "love-letter",
+    year: "2016",
+    c1: "#3ac25a",
+    c2: "#0e4a1a",
+    url: "https://www.youtube.com/watch?v=TODO_CHOREO_VERY_NICE_PERFORMANCE",
+  },
+  {
+    id: "fear-practice",
+    title: "Fear — Dance Practice",
+    sub: "SEVENTEEN",
+    song: "Fear",
+    type: "practice",
+    members: [],
+    era: "an-ode",
+    year: "2019",
+    c1: "#3a0a2a",
+    c2: "#1a0010",
+    url: "https://www.youtube.com/watch?v=TODO_CHOREO_FEAR_PRACTICE",
+  },
+  {
+    id: "left-and-right-performance",
+    title: "Left & Right — Performance",
+    sub: "SEVENTEEN",
+    song: "Left & Right",
+    type: "performance",
+    members: [],
+    era: "heng-garae",
+    year: "2020",
+    c1: "#8ac23a",
+    c2: "#3a4a0e",
+    url: "https://www.youtube.com/watch?v=TODO_CHOREO_LEFT_AND_RIGHT_PERFORMANCE",
+  },
+  {
+    id: "ready-to-love-practice",
+    title: "Ready to love — Dance Practice",
+    sub: "SEVENTEEN",
+    song: "Ready to love",
+    type: "practice",
+    members: [],
+    era: "your-choice",
+    year: "2021",
+    c1: "#5ac2c2",
+    c2: "#1a4a4a",
+    url: "https://www.youtube.com/watch?v=TODO_CHOREO_READY_TO_LOVE_PRACTICE",
+  },
+  {
+    id: "lilili-yabbay-performance",
+    title: "Lilili Yabbay — Performance Team",
+    sub: "PERFORMANCE UNIT",
+    song: "Lilili Yabbay",
+    type: "performance",
+    members: ["jun", "hoshi", "minghao", "dino"],
+    era: "teen-age",
+    year: "2017",
+    c1: "#9181ac",
+    c2: "#7e912a",
+    url: "https://www.youtube.com/watch?v=TODO_CHOREO_LILILI_YABBAY_PERFORMANCE",
+  },
+  {
+    id: "hot-fancam-dino",
+    title: "HOT — DINO Fancam",
+    sub: "DINO",
+    song: "HOT",
+    type: "fancam",
+    members: ["dino"],
+    era: "face-the-sun",
+    year: "2022",
+    c1: "#c25a3a",
+    c2: "#4a1a0e",
+    url: "https://www.youtube.com/watch?v=TODO_CHOREO_HOT_FANCAM_DINO",
+  },
+  {
+    id: "super-fancam-hoshi",
+    title: "손오공 (Super) — HOSHI Fancam",
+    sub: "HOSHI",
+    song: "Super",
+    type: "fancam",
+    members: ["hoshi"],
+    era: "fml",
+    year: "2023",
+    c1: "#7d85db",
+    c2: "#3028a2",
+    url: "https://www.youtube.com/watch?v=TODO_CHOREO_SUPER_FANCAM_HOSHI",
+  },
+];
+
+export default CHOREOGRAPHY;

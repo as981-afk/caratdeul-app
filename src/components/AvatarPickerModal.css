@@ -1,0 +1,199 @@
+/* --- Avatar photo picker modal ------------------------------------------------- */
+
+.avatar-picker {
+  position: relative;
+  width: min(600px, 100%);
+  max-height: calc(100vh - 2rem);
+  max-height: calc(100dvh - 2rem);
+  border-radius: 20px;
+  background: linear-gradient(180deg, #171928 0%, #101220 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.7), 0 2px 12px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: avatarPickerIn 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.avatar-picker--closing {
+  animation: avatarPickerOut 0.2s ease forwards;
+}
+[data-theme="light"] .avatar-picker {
+  background: linear-gradient(180deg, var(--surface-1) 0%, var(--surface-2) 100%);
+  border-color: var(--line-1);
+  box-shadow: 0 30px 90px rgba(var(--shadow-rgb), 0.25), 0 2px 12px rgba(var(--shadow-rgb), 0.12);
+}
+@keyframes avatarPickerIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes avatarPickerOut {
+  to { opacity: 0; transform: translateY(10px) scale(0.97); }
+}
+
+.avatar-picker-header {
+  flex-shrink: 0;
+  padding: 22px 56px var(--space-5) var(--space-10);
+}
+.avatar-picker-title {
+  font-family: "Inter", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  color: var(--diamond);
+  margin: 0 0 4px;
+}
+.avatar-picker-subtitle {
+  font-size: 0.82rem;
+  color: var(--slate);
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.avatar-picker-grid {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+  -webkit-overflow-scrolling: touch;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-10) var(--space-7);
+}
+.avatar-picker-option {
+  position: relative;
+  appearance: none;
+  border: 2px solid transparent;
+  background: var(--veil-1);
+  border-radius: 14px;
+  padding: 0;
+  aspect-ratio: 1;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+.avatar-picker-option:hover {
+  transform: translateY(-2px);
+}
+.avatar-picker-option--active {
+  border-color: var(--rose);
+  box-shadow: 0 0 0 3px rgba(242, 169, 193, 0.2);
+}
+.avatar-picker-option:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+.avatar-picker-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* Carat icon option: the shared AvatarCircle centred in the tile. */
+.avatar-picker-icon {
+  width: 70%;
+  height: 70%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.7rem;
+}
+.avatar-picker-check {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--rose);
+  color: var(--on-accent);
+  font-size: 0.7rem;
+  font-weight: 800;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.15s, transform 0.15s;
+}
+.avatar-picker-option--active .avatar-picker-check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.avatar-picker-footer {
+  flex-shrink: 0;
+  display: flex;
+  gap: var(--space-4);
+  justify-content: flex-end;
+  padding: var(--space-6) var(--space-10);
+  border-top: 1px solid var(--line-1);
+  background: var(--glass-faint);
+}
+.avatar-picker-btn {
+  border: none;
+  border-radius: 10px;
+  padding: 11px 22px;
+  font-family: "Inter", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: var(--veil-2);
+  color: var(--text-bright);
+  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+.avatar-picker-btn:hover {
+  background: var(--veil-3);
+  transform: translateY(-1px);
+}
+.avatar-picker-btn:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+.avatar-picker-btn--primary {
+  background: linear-gradient(135deg, var(--rose), var(--serenity));
+  color: var(--on-accent);
+  box-shadow: 0 4px 16px rgba(242, 169, 193, 0.25);
+}
+.avatar-picker-btn--primary:hover {
+  box-shadow: 0 8px 24px rgba(242, 169, 193, 0.35);
+}
+.avatar-picker-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+  transform: none;
+  box-shadow: none;
+}
+
+@media (max-width: 600px) {
+  .avatar-picker {
+    width: 100%;
+    border-radius: 16px;
+  }
+  .avatar-picker-header {
+    padding: var(--space-8) 54px var(--space-4) var(--space-8);
+  }
+  .avatar-picker-grid {
+    grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+    padding: var(--space-4) var(--space-7) var(--space-6);
+  }
+  .avatar-picker-footer {
+    padding: var(--space-5) var(--space-7);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .avatar-picker,
+  .avatar-picker--closing,
+  .modal-overlay--closing {
+    animation: none;
+  }
+  .avatar-picker-option,
+  .avatar-picker-btn {
+    transition: none;
+  }
+}

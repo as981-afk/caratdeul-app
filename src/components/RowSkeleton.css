@@ -1,0 +1,56 @@
+/* Skeleton rows shown while a lazy content chunk is loading.
+   Geometry mirrors `.row` / `.card` so nothing jumps when data lands. */
+
+.row-skeleton .row-scroll {
+  pointer-events: none;
+}
+
+.skeleton-block,
+.skeleton-card,
+.skeleton-bias-card {
+  background: linear-gradient(
+    100deg,
+    var(--veil-1) 20%,
+    var(--veil-3) 40%,
+    var(--veil-1) 60%
+  );
+  background-size: 300% 100%;
+  animation: skeletonShimmer 1.4s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+.row-skeleton-title .skeleton-block {
+  display: inline-block;
+  width: 180px;
+  height: 1.05rem;
+  border-radius: 6px;
+}
+
+.skeleton-card {
+  min-width: 280px;
+  height: 170px;
+  flex-shrink: 0;
+  border-radius: 10px;
+}
+
+@keyframes skeletonShimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+/* Shimmer is decoration only — collapse it for reduced-motion users. */
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-block,
+  .skeleton-card,
+  .skeleton-bias-card {
+    animation: none;
+    background: var(--veil-2);
+  }
+}
+
+@media (max-width: 600px) {
+  .skeleton-card {
+    min-width: 230px;
+    height: 150px;
+  }
+}

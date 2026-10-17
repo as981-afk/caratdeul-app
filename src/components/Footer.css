@@ -1,0 +1,15 @@
+.footer {
+  padding: 50px 40px 30px;
+  color: var(--slate);
+  font-size: 0.75rem;
+  text-align: center;
+}
+.footer b {
+  color: var(--rose-text);
+}
+
+@media (max-width: 600px) {
+  .footer {
+    padding: var(--space-10) var(--space-7) var(--space-7);
+  }
+}

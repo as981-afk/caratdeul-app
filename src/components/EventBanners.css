@@ -1,0 +1,118 @@
+/* --- Upcoming-date banners --------------------------------------------------- */
+
+.event-banners {
+  padding: var(--space-9) 40px 0;
+}
+.event-banner-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-5);
+}
+
+.event-banner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-6) var(--space-7);
+  border-radius: 12px;
+  border: 1px solid var(--line-2);
+  background: var(--veil-1);
+  overflow: hidden;
+}
+/* A thin accent rail per event kind, so the three types read differently. */
+.event-banner::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--line-3);
+}
+.event-banner--anniversary::before {
+  background: linear-gradient(180deg, var(--rose), var(--serenity));
+}
+.event-banner--birthday::before {
+  background: linear-gradient(180deg, var(--gold), var(--rose));
+}
+.event-banner--comeback::before {
+  background: linear-gradient(180deg, var(--serenity), var(--slate));
+}
+
+.event-banner-kind {
+  flex-shrink: 0;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--slate);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+.event-banner-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+.event-banner-title {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--text-white);
+}
+.event-banner-sub {
+  font-size: 0.7rem;
+  color: var(--slate);
+}
+
+.event-banner-countdown {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+.event-banner-unit {
+  display: inline-flex;
+  align-items: baseline;
+}
+.event-banner-value {
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--text-white);
+}
+.event-banner-suffix {
+  font-size: 0.62rem;
+  color: var(--slate);
+  margin-left: 1px;
+}
+.event-banner-today {
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--rose-text);
+}
+
+@media (max-width: 768px) {
+  .event-banners {
+    padding: var(--space-8) var(--space-9) 0;
+  }
+}
+@media (max-width: 600px) {
+  .event-banners {
+    padding: var(--space-7) var(--space-6) 0;
+  }
+  .event-banner {
+    padding: var(--space-5);
+  }
+  .event-banner-kind {
+    writing-mode: horizontal-tb;
+    transform: none;
+    align-self: flex-start;
+  }
+}

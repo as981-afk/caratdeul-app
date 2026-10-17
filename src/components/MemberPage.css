@@ -1,0 +1,184 @@
+/* --- Member profile page ---------------------------------------------------- */
+
+.member-page {
+  /* The sections below reuse the shared `.row` padding; the hero and bar set
+     their own. */
+  padding-bottom: var(--space-9);
+}
+.member-page-bar {
+  padding: var(--space-7) 40px 0;
+}
+.member-page-back {
+  appearance: none;
+  border: 1px solid var(--overlay-border);
+  background: var(--overlay-bg);
+  color: var(--text-white);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-family: inherit;
+  padding: var(--space-2) var(--space-5);
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+.member-page-back:hover {
+  border-color: var(--line-3);
+}
+.member-page-back:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+
+.member-hero {
+  display: flex;
+  gap: var(--space-9);
+  align-items: stretch;
+  margin: var(--space-7) 40px var(--space-4);
+  padding: var(--space-8);
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+  position: relative;
+  overflow: hidden;
+  flex-wrap: wrap;
+}
+.member-hero-img-wrap {
+  width: 230px;
+  height: 300px;
+  flex-shrink: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+  background: var(--veil-2);
+}
+.member-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.member-hero-info {
+  flex: 1;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  color: var(--on-media);
+}
+.member-hero-unit {
+  align-self: flex-start;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--on-media);
+  background: rgba(10, 11, 18, 0.5);
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+.member-hero-name {
+  font-family: "Fraunces", serif;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--on-media);
+}
+.member-hero-full {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+.member-hero-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-7);
+  margin: var(--space-2) 0;
+}
+.member-hero-facts div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.member-hero-facts dt {
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+.member-hero-facts dd {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.member-hero-bio {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  max-width: 64ch;
+}
+.member-hero-fun {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  opacity: 0.9;
+  max-width: 64ch;
+}
+.member-hero-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  margin-top: var(--space-2);
+}
+.member-hero-actions .heart-btn {
+  position: static;
+}
+.member-hero-instagram {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--on-media);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 999px;
+  padding: 6px 14px;
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+.member-hero-instagram:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+.member-hero-instagram:focus-visible {
+  outline: 2px solid var(--on-media);
+  outline-offset: 2px;
+}
+
+.member-empty {
+  margin: var(--space-9) 40px;
+  padding: var(--space-11);
+  text-align: center;
+  color: var(--slate);
+  border: 1px dashed var(--line-2);
+  border-radius: 14px;
+}
+
+@media (max-width: 768px) {
+  .member-hero {
+    margin: var(--space-6) var(--space-9) var(--space-4);
+    padding: var(--space-6);
+    gap: var(--space-6);
+  }
+  .member-page-bar {
+    padding: var(--space-6) var(--space-9) 0;
+  }
+}
+@media (max-width: 600px) {
+  .member-hero {
+    margin: var(--space-5) var(--space-6) var(--space-3);
+  }
+  .member-hero-img-wrap {
+    width: 100%;
+    height: 240px;
+  }
+  .member-page-bar {
+    padding: var(--space-5) var(--space-6) 0;
+  }
+  .member-empty {
+    margin: var(--space-7) var(--space-6);
+  }
+}

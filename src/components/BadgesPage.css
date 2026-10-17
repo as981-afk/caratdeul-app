@@ -1,0 +1,186 @@
+/* --- Achievements / badges page -------------------------------------------- */
+
+.badges-page {
+  padding: var(--space-11) 40px var(--space-9);
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+.badges-head {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-6);
+  flex-wrap: wrap;
+}
+.badges-head-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  flex: 1 1 320px;
+}
+.badges-eyebrow {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-text, var(--gold));
+}
+.badges-title {
+  font-family: "Fraunces", serif;
+  font-weight: 700;
+  font-size: 1.6rem;
+  margin: 0;
+}
+.badges-sub {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-base);
+}
+.badges-back {
+  margin-left: auto;
+  appearance: none;
+  border: 1px solid var(--overlay-border);
+  background: var(--overlay-bg);
+  color: var(--text-white);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-family: inherit;
+  padding: var(--space-2) var(--space-5);
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+.badges-back:hover {
+  border-color: var(--line-3);
+}
+
+/* Overall completion meter. */
+.badges-meter {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+}
+.badges-meter-track {
+  flex: 1;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--veil-2);
+  overflow: hidden;
+}
+.badges-meter-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--gold), var(--rose));
+  transition: width 0.3s ease;
+}
+.badges-meter-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-base);
+  white-space: nowrap;
+}
+
+.badges-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+.badges-section-title {
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin: 0;
+  font-weight: 800;
+}
+.badges-empty {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+
+.badges-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: var(--space-5);
+}
+
+.badge-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-6);
+  border-radius: 14px;
+  border: 1px solid var(--line-2);
+  background: var(--surface-1);
+  min-height: 150px;
+}
+.badge-card--earned {
+  border-color: transparent;
+  background:
+    linear-gradient(var(--surface-1), var(--surface-1)) padding-box,
+    linear-gradient(150deg, var(--c1), var(--c2)) border-box;
+  border: 1.5px solid transparent;
+}
+.badge-card--locked {
+  opacity: 0.72;
+}
+
+.badge-icon {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+.badge-icon--locked {
+  filter: grayscale(1);
+  opacity: 0.6;
+  font-size: 1.3rem;
+}
+.badge-name {
+  font-family: "Fraunces", serif;
+  font-weight: 700;
+  font-size: 1rem;
+}
+.badge-desc {
+  font-size: 0.78rem;
+  color: var(--text-base);
+  line-height: 1.4;
+}
+.badge-date {
+  margin-top: auto;
+  font-size: 0.68rem;
+  color: var(--text-dim);
+}
+.badge-progress {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.badge-progress-track {
+  height: 5px;
+  border-radius: 999px;
+  background: var(--veil-2);
+  overflow: hidden;
+}
+.badge-progress-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--rose), var(--serenity));
+}
+.badge-progress-label {
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .badges-page {
+    padding: var(--space-9) 20px var(--space-8);
+  }
+}

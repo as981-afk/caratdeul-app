@@ -1,0 +1,98 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--modal-bg);
+  backdrop-filter: blur(8px);
+  /* Grid + child auto margins: a child smaller than the viewport centers, and
+     one that is taller stays fully reachable (scrolling to its top/edges)
+     instead of having its head clipped by `align-items: center`. */
+  display: grid;
+  place-items: center;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  z-index: 100;
+  padding: var(--space-10);
+}
+.modal-overlay > [role="dialog"] {
+  margin: auto;
+}
+.modal-card {
+  position: relative;
+  width: min(480px, 100%);
+  border-radius: 16px;
+  padding: var(--space-12);
+  background: linear-gradient(160deg, var(--c1), var(--c2)),
+    linear-gradient(180deg, rgba(10, 11, 18, 0.2), rgba(10, 11, 18, 0.65));
+  background-blend-mode: overlay;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.7);
+  clip-path: polygon(0 3%, 97% 0, 100% 97%, 3% 100%);
+  animation: modalSlideIn 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  background: rgba(10, 11, 18, 0.5);
+  border: none;
+  color: var(--diamond);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.modal-close:hover {
+  background: rgba(10, 11, 18, 0.7);
+}
+.modal-close:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+.modal-title {
+  font-family: "Fraunces", serif;
+  font-weight: 700;
+  font-size: 1.6rem;
+  margin: var(--space-6) 0 var(--space-4);
+}
+.modal-desc {
+  color: var(--text-bright);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 22px;
+}
+/* Light theme: the c1/c2 gradient panels blend over a white scrim instead of a
+   dark one, so the pastel tint survives while body text (dark ink) stays readable. */
+[data-theme="light"] .modal-card {
+  background: linear-gradient(160deg, var(--c1), var(--c2)),
+    linear-gradient(180deg, rgba(var(--surface-rgb), 0.6), rgba(var(--surface-rgb), 0.9));
+  box-shadow: 0 24px 80px rgba(var(--shadow-rgb), 0.35);
+}
+[data-theme="light"] .modal-close {
+  background: rgba(var(--ink-rgb), 0.08);
+}
+[data-theme="light"] .modal-close:hover {
+  background: rgba(var(--ink-rgb), 0.16);
+}
+.modal-overlay--closing {
+  animation: accountOverlayOut 0.2s ease forwards;
+}
+@keyframes accountOverlayOut {
+  to { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal-card,
+  .modal-overlay--closing {
+    animation: none;
+  }
+}

@@ -1,0 +1,86 @@
+/* --- Member page skeletons --------------------------------------------------
+   The shimmer primitives live in RowSkeleton.css; these rules only add the
+   geometry that mirrors MembersPage / MemberPage. */
+
+.member-skeleton .members-page-head,
+.member-skeleton .row-title {
+  pointer-events: none;
+}
+
+/* Generic text bars. */
+.skeleton-line {
+  display: block;
+  width: 100%;
+  height: 14px;
+  border-radius: 6px;
+}
+.skeleton-line--sm {
+  width: 40%;
+}
+.skeleton-line--md {
+  width: 60%;
+}
+.skeleton-line--lg {
+  width: 180px;
+  height: 1.15rem;
+}
+.skeleton-line--xl {
+  width: 220px;
+  height: 1.9rem;
+  border-radius: 8px;
+}
+.skeleton-line--pill {
+  width: 110px;
+  height: 26px;
+  border-radius: 999px;
+}
+
+/* Members grid: same auto-fill columns as the real page. */
+.skeleton-bias-card {
+  width: 100%;
+  aspect-ratio: 150 / 220;
+  border-radius: 12px;
+}
+
+/* Member profile hero. */
+.skeleton-hero {
+  display: flex;
+  gap: var(--space-9);
+  align-items: stretch;
+  flex-wrap: wrap;
+  margin: var(--space-7) 40px var(--space-4);
+  padding: var(--space-8);
+  border-radius: 18px;
+  background: var(--veil-2);
+}
+.skeleton-hero-img {
+  width: 230px;
+  height: 300px;
+  border-radius: 14px;
+  flex-shrink: 0;
+}
+.skeleton-hero-info {
+  flex: 1;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
+@media (max-width: 768px) {
+  .skeleton-hero {
+    margin: var(--space-6) var(--space-9) var(--space-4);
+    padding: var(--space-6);
+    gap: var(--space-6);
+  }
+}
+@media (max-width: 600px) {
+  .skeleton-hero {
+    margin: var(--space-5) var(--space-6) var(--space-3);
+  }
+  .skeleton-hero-img {
+    width: 100%;
+    height: 240px;
+  }
+}

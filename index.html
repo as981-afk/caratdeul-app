@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a0b12" />
+    <meta name="description" content="CARATFLIX — a demo streaming UI for SEVENTEEN content." />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    <title>caratdeul</title>
+    <script>
+      // Apply the active profile's theme + accent before first paint so users
+      // don't get a flash of the wrong colours while the bundle loads.
+      //
+      // The theme/accent come from two small caches ("caratflix-theme" /
+      // "caratflix-accent") that ThemeContext keeps in sync with the selected
+      // profile. The fallback order for the theme mirrors ThemeContext
+      // (storage -> prefers-color-scheme -> dark); the accent falls back to the
+      // default Rose Quartz gradient.
+      (function () {
+        var t = null;
+        try { t = localStorage.getItem("caratflix-theme"); } catch (e) {}
+        if (t == null) { try { t = sessionStorage.getItem("caratflix-theme"); } catch (e) {} }
+        if (t !== "light" && t !== "dark") {
+          try {
+            t = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          } catch (e) { t = "dark"; }
+        }
+        document.documentElement.setAttribute("data-theme", t);
+        var m = document.querySelector('meta[name="theme-color"]');
+        if (m) m.setAttribute("content", t === "light" ? "#f1efe9" : "#0a0b12");
+
+        // Accent gradient endpoints, keyed by accent id (see data/AVATARS.js).
+        var accents = {
+          quartz: ["#f2a9c1", "#9fc3e8"],
+          serenity: ["#9fc3e8", "#6fa8d8"],
+          lavender: ["#c3a9f2", "#9fc3e8"],
+          mint: ["#9fe8d3", "#9fc3e8"],
+          gold: ["#d4af7a", "#f2a9c1"],
+          coral: ["#f2a9a9", "#f2a9c1"],
+          bubblegum: ["#f2a9d5", "#c3a9f2"],
+          ice: ["#a9d5f2", "#cfe0f2"]
+        };
+        var a = null;
+        try { a = localStorage.getItem("caratflix-accent"); } catch (e) {}
+        if (a == null) { try { a = sessionStorage.getItem("caratflix-accent"); } catch (e) {} }
+        var pair = accents[a];
+        if (pair) {
+          document.documentElement.style.setProperty("--rose", pair[0]);
+          document.documentElement.style.setProperty("--serenity", pair[1]);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

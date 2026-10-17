@@ -1,0 +1,7 @@
+/* --- Generated member playlist ---------------------------------------------- */
+
+/* Slightly tighter top padding: this row is usually paired with the fancam
+   focus bar directly above it, which already brings its own spacing. */
+.member-playlist.row {
+  padding-top: var(--space-9);
+}

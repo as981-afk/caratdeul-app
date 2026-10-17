@@ -1,0 +1,173 @@
+/* --- Shared profile settings controls --------------------------------------- */
+
+/* Theme segmented control */
+.pf-theme {
+  display: inline-flex;
+  gap: var(--space-2);
+  padding: var(--space-1);
+  border-radius: 12px;
+  background: var(--veil-1);
+  border: 1px solid var(--line-1);
+}
+.pf-theme-option {
+  appearance: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6);
+  border-radius: 9px;
+  color: var(--text-base);
+  font-family: "Inter", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: background 0.15s, color 0.15s;
+}
+.pf-theme-option:hover {
+  color: var(--text-white);
+}
+.pf-theme-option--active {
+  background: linear-gradient(135deg, var(--rose), var(--serenity));
+  color: var(--on-accent);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+.pf-theme-option:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+.pf-theme-icon {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+/* Accent swatches */
+.pf-accents {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+.pf-accent {
+  position: relative;
+  appearance: none;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s;
+}
+.pf-accent:hover {
+  transform: translateY(-2px);
+}
+.pf-accent:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+.pf-accent-dot {
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2);
+}
+.pf-accent--active {
+  border-color: var(--text-white);
+}
+.pf-accent-check {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+.pf-accent-preview {
+  display: inline-block;
+  width: 60px;
+  height: 10px;
+  border-radius: 999px;
+}
+
+/* Notification switches */
+.pf-notifs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.pf-notif {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+  padding: var(--space-6) 0;
+  border-bottom: 1px solid var(--line-1);
+}
+.pf-notif:last-child {
+  border-bottom: none;
+}
+.pf-notif-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.pf-notif-label {
+  color: var(--text-bright);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.pf-notif-hint {
+  color: var(--slate);
+  font-size: 0.76rem;
+}
+.pf-switch {
+  position: relative;
+  flex-shrink: 0;
+  width: 46px;
+  height: 26px;
+  border-radius: 999px;
+  border: 1px solid var(--line-2);
+  background: var(--veil-2);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+.pf-switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--text-bright);
+  transition: transform 0.2s, background 0.2s;
+}
+.pf-switch--on {
+  background: linear-gradient(135deg, var(--rose), var(--serenity));
+  border-color: transparent;
+}
+.pf-switch--on .pf-switch-thumb {
+  transform: translateX(20px);
+  background: #fff;
+}
+.pf-switch:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pf-accent,
+  .pf-switch,
+  .pf-switch-thumb,
+  .pf-theme-option {
+    transition: none;
+  }
+}

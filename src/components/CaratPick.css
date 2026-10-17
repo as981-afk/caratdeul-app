@@ -1,0 +1,170 @@
+/* --- Daily Carat Pick -------------------------------------------------------- */
+
+.carat-pick {
+  position: relative;
+  margin: var(--space-11) 40px 0;
+  display: grid;
+  grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+  gap: var(--space-9);
+  align-items: center;
+  padding: var(--space-9);
+  border-radius: 18px;
+  border: 1px solid var(--line-2);
+  background: var(--veil-1);
+  overflow: hidden;
+}
+/* Themed by the pick's own palette, so the card changes colour each day. */
+.carat-pick::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+  opacity: 0.22;
+  pointer-events: none;
+}
+.carat-pick > * {
+  position: relative;
+  z-index: 1;
+}
+
+.carat-pick-media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--veil-3);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+.carat-pick-media img,
+.carat-pick-media-fallback {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.carat-pick-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 0.62rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 700;
+  background: rgba(10, 11, 18, 0.6);
+  color: var(--on-media);
+  padding: 3px var(--space-3);
+  border-radius: 20px;
+}
+
+.carat-pick-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+}
+.carat-pick-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--gold-text);
+}
+.carat-pick-star {
+  font-size: 0.8rem;
+}
+.carat-pick-date {
+  margin-left: var(--space-2);
+  padding-left: var(--space-3);
+  border-left: 1px solid var(--line-2);
+  color: var(--slate);
+  letter-spacing: 0.6px;
+}
+.carat-pick-title {
+  margin: 0;
+  font-family: "Fraunces", serif;
+  font-weight: 700;
+  font-size: clamp(1.4rem, 2.6vw, 2.1rem);
+  line-height: 1.15;
+}
+.carat-pick-meta {
+  margin: 0;
+  font-size: 0.76rem;
+  color: var(--text-medium);
+}
+.carat-pick-desc {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: var(--text-base);
+  max-width: 62ch;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.carat-pick-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  flex-wrap: wrap;
+  margin-top: var(--space-3);
+}
+.carat-pick-play {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  border: none;
+  border-radius: 8px;
+  padding: var(--space-5) var(--space-10);
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: var(--diamond);
+  color: var(--obsidian);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.carat-pick-play:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
+}
+.carat-pick-play:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 3px;
+}
+.carat-pick-note {
+  font-size: 0.72rem;
+  color: var(--slate);
+}
+
+@media (max-width: 768px) {
+  .carat-pick {
+    margin: var(--space-9) var(--space-9) 0;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-7);
+    padding: var(--space-7);
+  }
+}
+@media (max-width: 600px) {
+  .carat-pick {
+    margin: var(--space-8) var(--space-6) 0;
+    padding: var(--space-6);
+  }
+  .carat-pick-play {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carat-pick-play {
+    transition: none;
+  }
+  .carat-pick-play:hover {
+    transform: none;
+  }
+}

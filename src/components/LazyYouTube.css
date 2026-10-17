@@ -1,0 +1,66 @@
+/* --- Lazy YouTube player ---------------------------------------------------- */
+
+.lazy-youtube {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  border-radius: inherit;
+  background: #000;
+  cursor: pointer;
+  display: block;
+  overflow: hidden;
+}
+.lazy-youtube img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.4s ease;
+}
+.lazy-youtube:hover img {
+  transform: scale(1.05);
+  filter: brightness(0.9);
+}
+.lazy-youtube-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(242, 169, 193, 0.95), rgba(159, 195, 232, 0.95));
+  border-radius: 50%;
+  color: var(--on-accent);
+  padding: var(--space-8);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  pointer-events: none;
+  box-shadow: 0 8px 32px rgba(242, 169, 193, 0.4);
+}
+.lazy-youtube:hover .lazy-youtube-play {
+  transform: translate(-50%, -50%) scale(1.1);
+  background: linear-gradient(135deg, var(--rose), var(--serenity));
+  box-shadow: 0 12px 40px rgba(242, 169, 193, 0.5);
+}
+.lazy-youtube:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: -3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lazy-youtube img,
+  .lazy-youtube-play {
+    transition: none;
+  }
+  .lazy-youtube:hover img {
+    transform: none;
+  }
+  .lazy-youtube:hover .lazy-youtube-play {
+    transform: translate(-50%, -50%);
+  }
+}

@@ -4,11 +4,8 @@ import AvatarCircle from "./AvatarCircle";
 import AvatarPickerModal from "./AvatarPickerModal";
 import {
   MIN_PASSWORD_LENGTH,
-  isEmailTaken,
-  isUsernameTaken,
   isValidEmail,
   registerUser,
-  saveCurrentUser,
 } from "../utils/auth";
 import "./LoginPage.css";
 
@@ -53,14 +50,12 @@ export function SignUpPage({ onLogin, onBack, onRegistered }) {
         const v = value.trim();
         if (!v) return "Username is required.";
         if (v.length < 3) return "Username must be at least 3 characters.";
-        if (isUsernameTaken(v)) return "That username is already taken.";
         return "";
       }
       case "email": {
         const v = value.trim();
         if (!v) return "Email is required.";
         if (!isValidEmail(v)) return "Enter a valid email address.";
-        if (isEmailTaken(v)) return "That email is already registered.";
         return "";
       }
       case "password":
@@ -109,17 +104,15 @@ export function SignUpPage({ onLogin, onBack, onRegistered }) {
       setFormError(result.error);
       return;
     }
-    try {
-      saveCurrentUser(null);
-    } catch {
-      /* ignore */
-    }
     if (typeof onRegistered === "function") {
-      onRegistered({ email: form.email.trim().toLowerCase() });
+      onRegistered({
+        email: form.email.trim().toLowerCase(),
+        needsConfirmation: result.needsConfirmation,
+      });
       return;
     }
     if (typeof onLogin === "function") {
-      onLogin(result.user);
+      onLogin(result.account);
     }
   };
 

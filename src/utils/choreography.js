@@ -8,6 +8,7 @@
 // Clip kinds, in display order. `label` drives the filter chips and the card
 // badge; `value` is what an item's `type` field stores (and what the URL keeps).
 export const CHOREO_TYPE_OPTIONS = [
+  { value: "choreography", label: "Choreography" },
   { value: "practice", label: "Practice" },
   { value: "dance-version", label: "Dance version" },
   { value: "performance", label: "Performance" },

@@ -18,7 +18,9 @@ import payload from "../data/youtubeVideos.json";
 
 const PALETTE = Object.values(CARAT_PALETTE);
 
-function tint(id) {
+// Shared with utils/choreoVideos.js, which tints channel-derived clips the same
+// way so a video keeps one gradient wherever it appears.
+export function tint(id) {
   let hash = 0;
   for (const char of String(id ?? "")) hash = (hash * 31 + char.codePointAt(0)) >>> 0;
   return PALETTE[hash % PALETTE.length];

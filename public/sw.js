@@ -15,7 +15,7 @@
  *   then work with no network at all.
  */
 
-const CACHE = "caratflix-v1";
+const CACHE = "caratflix-v2";
 const SHELL = ["/", "/index.html", "/manifest.webmanifest", "/favicon.svg", "/icon-192.png", "/icon-512.png"];
 
 self.addEventListener("install", (event) => {

@@ -172,4 +172,7 @@ export function ensureProfiles(account) {
 export function purgeProfileData(profileId) {
   if (!profileId) return;
   for (const base of SCOPED_KEYS) storageRemove(`${base}-${profileId}`);
+  // Supabase sync markers (see context/SyncContext.jsx).
+  storageRemove(`caratflix-synced-fav-${profileId}`);
+  storageRemove(`caratflix-synced-wp-${profileId}`);
 }

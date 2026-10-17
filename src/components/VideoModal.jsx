@@ -1,5 +1,6 @@
 import { useCallback, useRef } from "react";
 import Modal from "./Modal";
+import SafeImg from "./SafeImg";
 import VideoPlayer from "./VideoPlayer";
 import HeartButton from "./HeartButton";
 import { useSession } from "../context/SessionContext.jsx";
@@ -92,7 +93,7 @@ export function VideoModal({ item, onClose, onWatchStart, onWatchEnd, startTime 
   const videoId = ytId(item.url);
   return (
     <Modal label={item.title} onClose={handleClose} className="mv-modal" style={{ "--c1": item.c1, "--c2": item.c2 }}>
-      {videoId && (
+      {videoId ? (
         <VideoPlayer
           videoId={videoId}
           title={item.title}
@@ -105,6 +106,18 @@ export function VideoModal({ item, onClose, onWatchStart, onWatchEnd, startTime 
           onSave={handleSave}
           onFinish={handleFinish}
         />
+      ) : (
+        // No usable video id (a placeholder/missing url): show the poster plus a
+        // link instead of an empty modal, so the clip degrades gracefully.
+        <div className="mv-modal-fallback">
+          {ytThumb(item.url) ? (
+            <SafeImg className="mv-modal-fallback-img" src={ytThumb(item.url)} alt="" width={1280} height={720} />
+          ) : null}
+          <p className="mv-modal-fallback-note">This clip can’t be played inside the app.</p>
+          <a className="mv-modal-link" href={item.url} target="_blank" rel="noopener noreferrer">
+            Open on YouTube
+          </a>
+        </div>
       )}
       <div className="mv-modal-info">
         <div className="mv-modal-meta">

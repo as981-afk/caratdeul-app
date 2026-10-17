@@ -1,15 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
-import { DEMO_PASSWORD, DEMO_USER, loginUser, saveCurrentUser } from "../utils/auth";
+import { loginUser } from "../utils/auth";
 import "./LoginPage.css";
 
-// Log In screen. Accepts a username OR email. Signing up lives entirely in
-// SignUpPage — this form never doubles as a registration form.
+// Log In screen. Accounts live in Supabase Auth, so the identifier is the email
+// address and the same credentials work on any device. Signing up lives
+// entirely in SignUpPage — this form never doubles as a registration form.
 export function LoginPage({
   onLogin,
   onCreateAccount,
   registered = false,
   registeredEmail = "",
+  registeredNeedsConfirmation = false,
 }) {
   const [identifier, setIdentifier] = useState(() => (registered && registeredEmail ? registeredEmail : ""));
   const [password, setPassword] = useState("");
@@ -30,7 +32,7 @@ export function LoginPage({
     setError("");
     setNotice("");
     if (!identifier.trim() || !password) {
-      setError("Please enter your username/email and password.");
+      setError("Please enter your email and password.");
       return;
     }
     setSubmitting(true);
@@ -40,8 +42,7 @@ export function LoginPage({
       setError(result.error);
       return;
     }
-    saveCurrentUser(result.user);
-    onLogin(result.user);
+    onLogin(result.account);
   };
 
   return (
@@ -55,17 +56,19 @@ export function LoginPage({
         <p className="login-subtitle">Welcome back, Carat</p>
         {registered && (
           <div className="login-notice" role="status">
-            Account created! Please log in.
+            {registeredNeedsConfirmation
+              ? "Check your email to confirm your account, then log in."
+              : "Account created! Please log in."}
           </div>
         )}
         {notice && <div className="login-notice">{notice}</div>}
         <form className="login-form" onSubmit={handleSubmit}>
           <div className="login-field">
-            <label htmlFor="login-user">Username or email</label>
+            <label htmlFor="login-user">Email</label>
             <input
               id="login-user"
               type="text"
-              placeholder="Enter your username or email"
+              placeholder="you@example.com"
               value={identifier}
               onChange={(e) => { setIdentifier(e.target.value); setError(""); }}
               autoComplete="username"
@@ -112,10 +115,6 @@ export function LoginPage({
             Create account
           </button>
         </p>
-        <p className="login-hint">
-          Demo mode: accounts are saved only in this browser. Log in with{" "}
-          <strong>{DEMO_USER} / {DEMO_PASSWORD}</strong>.
-        </p>
       </div>
     </div>
   );
@@ -126,6 +125,7 @@ LoginPage.propTypes = {
   onCreateAccount: PropTypes.func,
   registered: PropTypes.bool,
   registeredEmail: PropTypes.string,
+  registeredNeedsConfirmation: PropTypes.bool,
 };
 
 export default LoginPage;

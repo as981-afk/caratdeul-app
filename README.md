@@ -123,4 +123,65 @@ are separate and stay as they are — they are the app's own data, and channel
 uploads are deliberately kept out of them because they carry no member or era
 attribution.
 
+## Accounts + cloud data (Supabase)
+
+Accounts are handled by **Supabase Auth** and data lives in **Supabase Postgres**,
+so one email + password account works on every device at once. Login and sign-up
+talk to Supabase directly — there is no local account store, so an account
+created on one device is accepted on all of them. Each device keeps its own
+session, so signing out uses `signOut({ scope: "local" })` and leaves the other
+devices signed in.
+
+Connect a Supabase project (Auth + Postgres) before using the app. The client is
+`src/lib/supabase.js`; account helpers live in `src/utils/supabaseAuth.js`;
+profiles in `src/utils/supabaseProfiles.js`; and the My List / watch-progress
+mirror in `src/context/SyncContext.jsx` + `src/lib/supabaseSync.js`.
+
+1. Create a project at [supabase.com](https://supabase.com).
+2. **SQL Editor → New query**, paste `supabase/migrations/0001_init.sql`,
+   **Run**. This creates `public.profiles`, `public.my_list`, and
+   `public.watch_progress`, all with Row Level Security.
+3. **Authentication → Sign In / Providers → Email**: while testing, turn
+   **off** "Confirm email" so sign-up logs in immediately. (If it stays on, a
+   new user must click the confirmation link before their first sign-in.)
+4. **Project Settings → API**: copy the **Project URL** and the
+   **publishable** (or legacy **anon public**) key into `.env` (copy
+   `.env.example` first if needed):
+
+   ```bash
+   VITE_SUPABASE_URL=https://<project-ref>.supabase.co
+   VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
+   ```
+5. Restart `npm run dev`.
+
+Once configured, the login screen is **email** sign-in and data lives in
+Postgres, so every device signed into the same account sees the same profiles,
+theme/accent, My List, and Continue Watching. If a build has no Supabase
+configuration it says so up front instead of falling back to a local-only
+account that other devices could never see.
+
+The publishable/anon key is safe in client code — it only grants what the RLS
+policies allow. Never put the `service_role` / secret key in `.env`.
+
+### Where data lives
+
+| Data | Where it lives |
+| --- | --- |
+| Credentials (email + password) | Supabase Auth (server-side hashing) |
+| Session | per device (Supabase session) |
+| Profiles, theme, accent | `public.profiles` (mirrored to a local cache) |
+| My List | `public.my_list` (mirrored to a local cache) |
+| Watched state + Continue Watching | `public.watch_progress` (mirrored to a local cache) |
+| Recently watched, badges, comments, quiz | browser `localStorage` (per device) |
+
+Reads always come from the local cache first, so the first paint is instant and
+the app still opens offline. Remote changes are pulled when a profile loads and
+when the tab regains focus; local changes are pushed up (debounced) as you make
+them. A network failure keeps the local copy and logs a warning — it never
+blocks the UI.
+
+No password (or hash) is ever written by this app once Supabase is configured.
+
+
+
 

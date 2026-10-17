@@ -22,7 +22,7 @@ export function LazyYouTube({ videoId, title, thumb, autoplay, start = 0, starte
     return (
       <iframe
         ref={iframeRef}
-        src={`https://www.youtube.com/embed/${videoId}?autoplay=${autoplay ? 1 : 0}&enablejsapi=1${seek}`}
+        src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=${autoplay ? 1 : 0}&enablejsapi=1${seek}`}
         title={title}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen

@@ -1,7 +1,7 @@
 import { memo, useMemo, useState } from "react";
 import ContentCard from "./ContentCard";
 import EntryModal from "./EntryModal";
-import { CHOREOGRAPHY } from "../data/CHOREOGRAPHY";
+import { CHOREO_VIDEOS } from "../utils/choreoVideos";
 import { CHOREO_TYPE_OPTIONS, choreoTypeLabel } from "../utils/choreography";
 import { ERAS } from "../data/ERAS";
 import { MEMBERS } from "../data/MEMBERS";
@@ -97,11 +97,14 @@ export function ChoreographyPage({ filters, onFilter, onClearFilters, onClose, o
 
   // Only the chapters the catalogue actually covers, kept in timeline order.
   const eraOptions = useMemo(() => {
-    const present = new Set(CHOREOGRAPHY.map((clip) => clip.era));
+    const present = new Set(CHOREO_VIDEOS.map((clip) => clip.era));
     return ERAS.filter((item) => present.has(item.id));
   }, []);
 
   const filtersActive = Boolean(type || member || era || sort);
+  // No clips at all (the channel feed has no choreography yet) is different from
+  // "the filters hid everything", so they get different messages.
+  const baseEmpty = entries.length === 0;
 
   return (
     <div className="choreo-page" id="choreography-page">
@@ -163,7 +166,17 @@ export function ChoreographyPage({ filters, onFilter, onClearFilters, onClose, o
         )}
       </div>
 
-      {visible.length === 0 ? (
+      {baseEmpty ? (
+        <div className="choreo-empty">
+          <p className="choreo-empty-title">No choreography clips yet.</p>
+          <p className="choreo-empty-hint">
+            Clips come from the official SEVENTEEN channel, matched by the
+            choreography keywords. Run <code>npm run sync:youtube</code> to
+            refresh the uploads. Set <code>YOUTUBE_API_KEY</code> for the full
+            archive: the keyless RSS feed only carries the ~15 newest videos.
+          </p>
+        </div>
+      ) : visible.length === 0 ? (
         <div className="choreo-empty">
           <p className="choreo-empty-title">No choreography clips match these filters.</p>
           <p className="choreo-empty-hint">Try a different clip type, member or era.</p>

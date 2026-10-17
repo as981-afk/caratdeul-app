@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
-import { ensureDemoAccount, saveCurrentUser } from "../utils/auth";
 import LoginPage from "./LoginPage";
 import SignUpPage from "./SignUpPage";
 import "./LoginPage.css";
@@ -17,11 +16,6 @@ export function AuthFlow({ onLogin }) {
   const [view, setView] = useState("login");
   const [registered, setRegistered] = useState(null);
   const screenRef = useRef(null);
-
-  // Seed the demo account (no-op once any account exists).
-  useEffect(() => {
-    ensureDemoAccount();
-  }, []);
 
   // Lightweight history bookkeeping so the browser Back button returns from
   // Create Account to Log In. No URL changes are made.
@@ -56,15 +50,16 @@ export function AuthFlow({ onLogin }) {
     return () => cancelAnimationFrame(id);
   }, [view]);
 
-  const enter = useCallback((name) => {
-    saveCurrentUser(name);
-    onLogin(name);
+  const enter = useCallback((account) => {
+    onLogin(account);
   }, [onLogin]);
 
   const screen = view === "signup" ? (
     <SignUpPage
       onBack={() => go("login")}
-      onRegistered={({ email }) => go("login", { registered: true, email })}
+      onRegistered={({ email, needsConfirmation }) =>
+        go("login", { registered: true, email, needsConfirmation })
+      }
     />
   ) : (
     <LoginPage
@@ -72,6 +67,7 @@ export function AuthFlow({ onLogin }) {
       onCreateAccount={() => go("signup")}
       registered={registered?.registered}
       registeredEmail={registered?.email}
+      registeredNeedsConfirmation={registered?.needsConfirmation}
     />
   );
 

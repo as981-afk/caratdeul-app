@@ -914,7 +914,7 @@ export function Navbar({ query, onQuery, user, onLogout, activeSection, stats, o
         />
       )}
       {avatarPickerOpen && (
-        <AvatarPickerModal onClose={() => setAvatarPickerOpen(false)} onSaved={(message) => setToast(message)} />
+        <AvatarPickerModal onClose={() => setAvatarPickerOpen(false)} />
       )}
       {surprise && (
         <VideoModal item={surprise} onClose={closeSurprise} onWatchEnd={closeSurprise} />

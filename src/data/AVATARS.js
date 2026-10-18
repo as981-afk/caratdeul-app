@@ -47,6 +47,11 @@ export const CARAT_AVATARS = [
 
 const AVATAR_BY_ID = new Map(CARAT_AVATARS.map((a) => [a.id, a]));
 
+// The preset every profile falls back to: a custom photo that 404s (removed
+// file, offline, unconfigured storage) renders as this instead of a broken
+// image, and "Remove photo" resets the profile to it.
+export const DEFAULT_AVATAR_ID = CARAT_AVATARS[0].id;
+
 // Resolve a stored avatar id to its icon + gradient, or null when unknown (a
 // legacy gallery-photo id, a removed icon, or nothing picked yet).
 export function getCaratAvatar(id) {

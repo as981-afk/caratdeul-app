@@ -1,6 +1,8 @@
+import { useState } from "react";
 import SafeImg from "./SafeImg";
-import { getCaratAvatar } from "../data/AVATARS";
+import { getCaratAvatar, DEFAULT_AVATAR_ID } from "../data/AVATARS";
 import { getGalleryItem } from "../data/GALLERY";
+import { isCustomAvatar, customAvatarUrl } from "../utils/customAvatar";
 import "./AvatarCircle.css";
 
 // Deterministic 0-359 hue from a string so the default circle is consistent
@@ -12,7 +14,7 @@ function hueFor(str) {
 }
 
 // Default avatar: a name-derived gradient with the initial. Used whenever there
-// is no valid icon or gallery photo selected.
+// is no valid icon, uploaded photo, or gallery photo selected.
 function defaultAvatarStyle(name) {
   const hue = hueFor(name);
   return {
@@ -22,12 +24,40 @@ function defaultAvatarStyle(name) {
 }
 
 // The circle shown anywhere an avatar appears. Renders, in order of preference:
-//   1. a Carat-themed icon (the current picker; Rose Quartz / Serenity palette),
-//   2. a legacy gallery photo id from pre-icon builds,
-//   3. the coloured initial fallback.
+//   1. a custom uploaded photo ("custom:{path}" — see utils/customAvatar.js),
+//   2. a Carat-themed icon (the current picker; Rose Quartz / Serenity palette),
+//   3. a legacy gallery photo id from pre-icon builds,
+//   4. the coloured initial fallback.
+//
+// A custom photo that fails to load (deleted file, offline, unconfigured
+// storage) falls back to the default Carat preset rather than a broken image.
+// The failed URL is remembered rather than a bare boolean, so switching to a
+// different photo retries the load.
 export function AvatarCircle({ user, avatar, className = "" }) {
   const name = (user || "?").toString();
-  const icon = getCaratAvatar(avatar);
+  const customUrl = isCustomAvatar(avatar) ? customAvatarUrl(avatar) : null;
+  const [failedUrl, setFailedUrl] = useState(null);
+
+  if (customUrl && failedUrl !== customUrl) {
+    return (
+      <span className={`avatar-circle avatar-circle--photo${className ? ` ${className}` : ""}`}>
+        <img
+          className="avatar-circle-img"
+          src={customUrl}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          width={64}
+          height={64}
+          onError={() => setFailedUrl(customUrl)}
+        />
+      </span>
+    );
+  }
+
+  // A custom value whose image failed (or has no resolvable URL) shows the
+  // default preset instead of falling through to the initial.
+  const icon = getCaratAvatar(avatar) || (isCustomAvatar(avatar) ? getCaratAvatar(DEFAULT_AVATAR_ID) : null);
   const classes = `avatar-circle${icon ? " avatar-circle--icon" : ""}${className ? ` ${className}` : ""}`;
 
   if (icon) {

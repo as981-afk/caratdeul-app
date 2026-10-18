@@ -24,6 +24,12 @@ const publicKey =
 
 export const isSupabaseConfigured = Boolean(url && publicKey);
 
+// The same public configuration the client ships with, re-exported so avatar
+// storage can build public object URLs and stream raw uploads (with progress)
+// against the Storage REST endpoint. These are never secrets.
+export const SUPABASE_URL = url || "";
+export const SUPABASE_PUBLIC_KEY = publicKey || "";
+
 if (isSupabaseConfigured) {
   console.info(
     `[CaratFlix] Supabase configured (url: ${url}, publishable key: ${publicKey.slice(0, 8)}…).`

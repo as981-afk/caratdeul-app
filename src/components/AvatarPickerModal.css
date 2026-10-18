@@ -125,6 +125,107 @@
   transform: scale(1);
 }
 
+/* --- Custom (uploaded) avatar tile ----------------------------------------- */
+/* A wrapper is needed so the little "Remove" affordance can sit over the tile
+   without being clipped by its own overflow: hidden. */
+.avatar-picker-custom {
+  position: relative;
+  display: flex;
+}
+.avatar-picker-custom .avatar-picker-option {
+  width: 100%;
+}
+/* Dashed outline signals "this is a slot, not a preset" until it is chosen. */
+.avatar-picker-option--custom:not(.avatar-picker-option--active) {
+  border-style: dashed;
+  border-color: var(--line-2);
+}
+.avatar-picker-upload {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  color: var(--slate);
+}
+.avatar-picker-upload-plus {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.avatar-picker-upload-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.avatar-picker-remove {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(10, 11, 18, 0.78);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+/* Grow the tap target to ~44px without enlarging the visible button. */
+.avatar-picker-remove::after {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border-radius: 50%;
+}
+.avatar-picker-remove:hover {
+  background: rgba(10, 11, 18, 0.92);
+}
+.avatar-picker-remove:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+
+/* Visually hidden but still focusable-by-script file input. */
+.avatar-picker-file {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Upload progress, shown between the grid and the footer while saving. */
+.avatar-picker-progress {
+  flex-shrink: 0;
+  height: 6px;
+  margin: 0 var(--space-10) var(--space-2);
+  border-radius: 999px;
+  background: var(--veil-2);
+  overflow: hidden;
+}
+.avatar-picker-progress-bar {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--rose), var(--serenity));
+  transition: width 0.15s linear;
+}
+
 .avatar-picker-footer {
   flex-shrink: 0;
   display: flex;
@@ -184,6 +285,9 @@
   .avatar-picker-footer {
     padding: var(--space-5) var(--space-7);
   }
+  .avatar-picker-progress {
+    margin: 0 var(--space-7) var(--space-2);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -193,7 +297,8 @@
     animation: none;
   }
   .avatar-picker-option,
-  .avatar-picker-btn {
+  .avatar-picker-btn,
+  .avatar-picker-progress-bar {
     transition: none;
   }
 }

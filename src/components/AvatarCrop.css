@@ -1,0 +1,169 @@
+/* --- Custom avatar crop / resize -------------------------------------------- */
+/* Lives inside the avatar picker modal (so it reuses .avatar-picker-btn), and
+   follows the same dark-glass skin + theme tokens as the rest of the picker. */
+
+.avatar-crop {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-6) var(--space-10) var(--space-8);
+}
+
+.avatar-crop-header {
+  padding-right: 44px; /* clear the modal's close button */
+}
+.avatar-crop-title {
+  font-family: "Inter", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  color: var(--diamond);
+  margin: 0 0 4px;
+}
+.avatar-crop-hint {
+  font-size: 0.82rem;
+  color: var(--slate);
+  margin: 0;
+}
+
+.avatar-crop-error {
+  border: 1px solid rgba(242, 169, 169, 0.5);
+  background: rgba(242, 169, 169, 0.12);
+  color: #f3b9b9;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  padding: 9px 12px;
+}
+
+/* The square stage. touch-action: none stops a drag from scrolling the page. */
+.avatar-crop-viewport {
+  position: relative;
+  width: 100%;
+  max-width: 340px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #05060c;
+  border: 1px solid var(--line-1);
+  touch-action: none;
+  cursor: grab;
+}
+.avatar-crop-viewport:active {
+  cursor: grabbing;
+}
+.avatar-crop-viewport:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+
+/* Base position is the top-left corner; the inline transform drags it. */
+.avatar-crop-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+  transform-origin: 0 0;
+}
+
+/* Circular guide: dims everything outside the inscribed circle so the round
+   avatar preview reads clearly. Purely decorative — the export is square. */
+.avatar-crop-mask {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  box-shadow: 0 0 0 9999px rgba(6, 7, 14, 0.55);
+  border: 2px solid rgba(255, 255, 255, 0.75);
+}
+
+.avatar-crop-spinner {
+  position: absolute;
+  inset: 0;
+  width: 34px;
+  height: 34px;
+  margin: auto;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.25);
+  border-top-color: var(--rose);
+  animation: avatarCropSpin 0.8s linear infinite;
+}
+@keyframes avatarCropSpin {
+  to { transform: rotate(360deg); }
+}
+
+.avatar-crop-zoom {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+/* 44px square hit target for touch. */
+.avatar-crop-zoom-btn {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line-2);
+  border-radius: 12px;
+  background: var(--veil-2);
+  color: var(--text-bright);
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.avatar-crop-zoom-btn:hover:not(:disabled) {
+  background: var(--veil-3);
+  border-color: var(--line-3);
+}
+.avatar-crop-zoom-btn:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+.avatar-crop-zoom-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+/* Tall hit area so the slider is easy to grab on a phone. */
+.avatar-crop-range {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 44px;
+  margin: 0;
+  accent-color: var(--rose);
+  cursor: pointer;
+}
+.avatar-crop-range:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.avatar-crop-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-4);
+}
+
+@media (max-width: 600px) {
+  .avatar-crop {
+    padding: var(--space-5) var(--space-7) var(--space-7);
+  }
+  .avatar-crop-viewport {
+    max-width: 300px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .avatar-crop-spinner {
+    animation: none;
+  }
+  .avatar-crop-zoom-btn {
+    transition: none;
+  }
+}

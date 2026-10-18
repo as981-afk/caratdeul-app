@@ -141,10 +141,14 @@ mirror in `src/context/SyncContext.jsx` + `src/lib/supabaseSync.js`.
 2. **SQL Editor → New query**, paste `supabase/migrations/0001_init.sql`,
    **Run**. This creates `public.profiles`, `public.my_list`, and
    `public.watch_progress`, all with Row Level Security.
-3. **Authentication → Sign In / Providers → Email**: while testing, turn
+3. In the same SQL Editor, paste and run `supabase/migrations/0002_avatars.sql`.
+   This creates the public **`avatars`** storage bucket used by custom profile
+   photos and the RLS policies that let a user write only inside their own
+   folder (see [Custom avatar photos](#custom-avatar-photos)).
+4. **Authentication → Sign In / Providers → Email**: while testing, turn
    **off** "Confirm email" so sign-up logs in immediately. (If it stays on, a
    new user must click the confirmation link before their first sign-in.)
-4. **Project Settings → API**: copy the **Project URL** and the
+5. **Project Settings → API**: copy the **Project URL** and the
    **publishable** (or legacy **anon public**) key into `.env` (copy
    `.env.example` first if needed):
 
@@ -152,7 +156,7 @@ mirror in `src/context/SyncContext.jsx` + `src/lib/supabaseSync.js`.
    VITE_SUPABASE_URL=https://<project-ref>.supabase.co
    VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
    ```
-5. Restart `npm run dev`.
+6. Restart `npm run dev`.
 
 Once configured, the login screen is **email** sign-in and data lives in
 Postgres, so every device signed into the same account sees the same profiles,
@@ -170,6 +174,7 @@ policies allow. Never put the `service_role` / secret key in `.env`.
 | Credentials (email + password) | Supabase Auth (server-side hashing) |
 | Session | per device (Supabase session) |
 | Profiles, theme, accent | `public.profiles` (mirrored to a local cache) |
+| Custom avatar photos | Supabase Storage `avatars` bucket (public read; path stored on the profile) |
 | My List | `public.my_list` (mirrored to a local cache) |
 | Watched state + Continue Watching | `public.watch_progress` (mirrored to a local cache) |
 | Recently watched, badges, comments, quiz | browser `localStorage` (per device) |
@@ -181,6 +186,33 @@ them. A network failure keeps the local copy and logs a warning — it never
 blocks the UI.
 
 No password (or hash) is ever written by this app once Supabase is configured.
+
+### Custom avatar photos
+
+Profiles can use a preset Carat icon **or** upload their own photo. Both live in
+the profile's single `avatar` field, distinguished by prefix:
+
+- a preset id, e.g. `quartz-heart` (`src/data/AVATARS.js`), or
+- `custom:{storage path}`, e.g. `custom:{accountId}/{profileId}-1712345678901.webp`.
+
+Uploads are cropped, resized to **256×256** and encoded as **WebP** (JPEG on the
+few browsers that can't encode WebP) entirely in the browser before they leave
+the device — see `src/components/AvatarCrop.jsx`. `components/AvatarCircle`
+renders both kinds everywhere an avatar appears, and falls back to the default
+preset if a custom image fails to load.
+
+Files are stored in the public **`avatars`** bucket, at
+`{accountId}/{profileId}-{timestamp}.webp`. A fresh name on every upload means a
+replaced photo is never served from a stale cache, and the previous file is
+deleted after a successful save.
+
+**Manual Supabase setup:** run `supabase/migrations/0002_avatars.sql` (Dashboard
+→ SQL Editor → New query → Run, or `supabase db push`). It creates the bucket
+(5 MB limit; PNG/JPEG/WebP only) and the policies that allow anyone to read but
+only the owner to write inside their own `{accountId}/` folder. The client-side
+code is `src/utils/avatarUpload.js` (upload/delete) and
+`src/utils/customAvatar.js` (value parsing / public URL), and the picker UI is
+`src/components/AvatarPickerModal.jsx`.
 
 
 

@@ -58,11 +58,31 @@ export function saveCachedAccount(account) {
 // in storage (persisted per device).
 export async function getCurrentAccount() {
   if (!supabase) return null;
-  const { data, error } = await supabase.auth.getSession();
-  if (error) return loadCachedAccount();
-  const account = accountFromUser(data?.session?.user);
-  saveCachedAccount(account);
-  return account;
+  try {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      console.error("[CaratFlix] auth.getSession failed; using cached account", error);
+      return loadCachedAccount();
+    }
+    const token = data?.session?.access_token || null;
+    // The token here is the one supabase-js attaches as
+    // `Authorization: Bearer <token>` on every profiles / my_list /
+    // watch_progress request after login, so its presence is the check that
+    // "the auth token is sent in the request headers".
+    console.log("[CaratFlix] auth.getSession ✓", {
+      hasSession: Boolean(data?.session),
+      hasAccessToken: Boolean(token),
+      tokenLength: token ? token.length : 0,
+    });
+    const account = accountFromUser(data?.session?.user);
+    saveCachedAccount(account);
+    return account;
+  } catch (error) {
+    console.error("[CaratFlix] auth.getSession threw; using cached account", error);
+    return loadCachedAccount();
+  } finally {
+    console.log("[CaratFlix] auth.getSession settled");
+  }
 }
 
 // Re-fires whenever the session changes (sign-in/out, token refresh, another
@@ -116,22 +136,35 @@ export async function signInAccount(identifier, password) {
   if (!isValidEmail(identifier)) {
     return { error: "Please log in with the email address for this account." };
   }
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: identifier.trim().toLowerCase(),
-    password,
-  });
-  if (error) {
-    // Normalize Supabase's copy into plain wording for the login screen.
-    const message = /invalid login credentials/i.test(error.message)
-      ? "Incorrect email or password."
-      : /email not confirmed/i.test(error.message)
-      ? "Please confirm your email address before logging in."
-      : error.message;
-    return { error: message };
+  console.log("[CaratFlix] auth.signInWithPassword →", { email: identifier.trim().toLowerCase() });
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: identifier.trim().toLowerCase(),
+      password,
+    });
+    if (error) {
+      // Normalize Supabase's copy into plain wording for the login screen.
+      const message = /invalid login credentials/i.test(error.message)
+        ? "Incorrect email or password."
+        : /email not confirmed/i.test(error.message)
+        ? "Please confirm your email address before logging in."
+        : error.message;
+      console.error("[CaratFlix] auth.signInWithPassword ✗", error);
+      return { error: message };
+    }
+    const account = accountFromUser(data?.user);
+    saveCachedAccount(account);
+    console.log("[CaratFlix] auth.signInWithPassword ✓", {
+      userId: account?.id,
+      hasAccessToken: Boolean(data?.session?.access_token),
+    });
+    return { ok: true, account };
+  } catch (error) {
+    console.error("[CaratFlix] auth.signInWithPassword threw", error);
+    return { error: error.message || "Could not log in." };
+  } finally {
+    console.log("[CaratFlix] auth.signInWithPassword settled");
   }
-  const account = accountFromUser(data?.user);
-  saveCachedAccount(account);
-  return { ok: true, account };
 }
 
 // Signs out THIS device only. `scope: "local"` tells Supabase not to revoke the

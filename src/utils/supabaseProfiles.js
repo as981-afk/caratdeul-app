@@ -16,6 +16,7 @@
 
 import { supabase } from "../lib/supabase.js";
 import { loadProfiles, makeProfile } from "./profiles.js";
+import { loggedFetch } from "./fetchLogger.js";
 
 const PROFILE_COLUMNS =
   "id, name, avatar, theme, accent, notifications, bio, favorite_unit, " +
@@ -61,34 +62,40 @@ function profileToRow(userId, profile) {
 
 export async function listProfiles(userId) {
   if (!supabase || !userId) return [];
-  const { data, error } = await supabase
-    .from("profiles")
-    .select(PROFILE_COLUMNS)
-    .eq("user_id", userId)
-    .order("created_at", { ascending: true });
-  if (error) throw error;
-  return (data || []).map(rowToProfile).filter(Boolean);
+  return loggedFetch("profiles select", { userId }, async () => {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select(PROFILE_COLUMNS)
+      .eq("user_id", userId)
+      .order("created_at", { ascending: true });
+    if (error) throw error;
+    return (data || []).map(rowToProfile).filter(Boolean);
+  });
 }
 
 export async function saveProfile(userId, profile) {
   if (!supabase || !userId || !profile?.id) return null;
-  const { data, error } = await supabase
-    .from("profiles")
-    .upsert(profileToRow(userId, profile), { onConflict: "id" })
-    .select(PROFILE_COLUMNS)
-    .single();
-  if (error) throw error;
-  return rowToProfile(data);
+  return loggedFetch("profiles upsert", { userId, profileId: profile.id }, async () => {
+    const { data, error } = await supabase
+      .from("profiles")
+      .upsert(profileToRow(userId, profile), { onConflict: "id" })
+      .select(PROFILE_COLUMNS)
+      .single();
+    if (error) throw error;
+    return rowToProfile(data);
+  });
 }
 
 export async function deleteProfile(rowId, userId) {
   if (!supabase || !userId || !rowId) return;
-  const { error } = await supabase
-    .from("profiles")
-    .delete()
-    .eq("id", rowId)
-    .eq("user_id", userId);
-  if (error) throw error;
+  await loggedFetch("profiles delete", { userId, profileId: rowId }, async () => {
+    const { error } = await supabase
+      .from("profiles")
+      .delete()
+      .eq("id", rowId)
+      .eq("user_id", userId);
+    if (error) throw error;
+  });
 }
 
 // Loads the account's profiles, seeding them on first use. If this device still
@@ -97,16 +104,28 @@ export async function deleteProfile(rowId, userId) {
 // My List / Continue Watching that is keyed by those ids. Otherwise a single
 // default profile is created from the account handle.
 export async function bootstrapProfiles(userId, accountName) {
-  const existing = await listProfiles(userId);
-  if (existing.length) return existing;
+  console.log("[CaratFlix] bootstrapProfiles →", { userId, accountName });
+  try {
+    const existing = await listProfiles(userId);
+    if (existing.length) {
+      console.log("[CaratFlix] bootstrapProfiles ✓ existing", { count: existing.length });
+      return existing;
+    }
 
-  const local = accountName ? loadProfiles(accountName) : [];
-  const seed = local.length ? local : [makeProfile({ name: accountName || "Carat" })];
+    const local = accountName ? loadProfiles(accountName) : [];
+    const seed = local.length ? local : [makeProfile({ name: accountName || "Carat" })];
 
-  const saved = [];
-  for (const profile of seed) {
-    const row = await saveProfile(userId, profile);
-    if (row) saved.push(row);
+    const saved = [];
+    for (const profile of seed) {
+      const row = await saveProfile(userId, profile);
+      if (row) saved.push(row);
+    }
+    console.log("[CaratFlix] bootstrapProfiles ✓ seeded", { count: saved.length });
+    return saved;
+  } catch (error) {
+    console.error("[CaratFlix] bootstrapProfiles ✗", error);
+    throw error;
+  } finally {
+    console.log("[CaratFlix] bootstrapProfiles settled");
   }
-  return saved;
 }

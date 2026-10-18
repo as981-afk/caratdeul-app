@@ -12,16 +12,20 @@
 // `lazyWithRetry` instead:
 //   1. retries the import a few times with backoff when the failure looks
 //      transient, so a short blip never reaches the user at all, and
-//   2. gives every mount its own `React.lazy`, so the ErrorBoundary's "Try
-//      again" (which remounts the subtree via a new `key`) genuinely re-imports
-//      the chunk instead of replaying the cached rejection.
+//   2. resets its inner `React.lazy` when the import finally rejects, so the
+//      next mount genuinely re-imports the chunk instead of replaying the
+//      cached rejection.
 //
-// It renders an inner `React.lazy` rather than throwing the promise itself, so
-// React keeps its normal suspension/error semantics — a rejected lazy re-throws
-// its error to the ErrorBoundary, whereas a hand-rolled "throw the promise"
-// component makes React retry the suspension forever.
+// IMPORTANT — the inner `React.lazy` is created in a closure variable, *not* in
+// `useState`/`useRef`/`useMemo`. A component that suspends during its own first
+// render never commits, so a hook initializer runs again on every retry: each
+// retry built a brand-new, still-pending `React.lazy`, the suspense promise was
+// thrown again, and the boundary stayed on its fallback forever. That is the
+// "every row is a skeleton, nothing loads, no console errors" bug. A closure
+// variable is created once per `lazyWithRetry()` call and survives suspension,
+// so the lazy resolves normally.
 
-import { createElement, lazy, useState } from "react";
+import { createElement, lazy } from "react";
 
 // Backoff between attempts of a single import. Deliberately short — long enough
 // to ride out a dev-server restart, short enough that a genuine failure still
@@ -52,22 +56,49 @@ export function isTransientLoadError(error) {
 
 // Runs `load`, retrying with backoff while the failure is transient.
 export async function loadWithRetry(load, delays = RETRY_DELAYS) {
+  const startedAt = Date.now();
   for (let attempt = 0; ; attempt += 1) {
     try {
-      return await load();
+      const module = await load();
+      console.log(
+        `[CaratFlix] lazy chunk loaded (attempt ${attempt + 1}, ${Date.now() - startedAt}ms)`
+      );
+      return module;
     } catch (error) {
-      if (attempt >= delays.length || !isTransientLoadError(error)) throw error;
+      const transient = isTransientLoadError(error);
+      const last = attempt >= delays.length || !transient;
+      console.error(
+        `[CaratFlix] lazy chunk import failed (attempt ${attempt + 1}${last ? ", giving up" : ", retrying"}):`,
+        error
+      );
+      if (last) throw error;
       await delay(delays[attempt]);
+    } finally {
+      // Runs on every outcome, so the terminal/console always shows that the
+      // fetch attempt settled (this is the line that proves a skeleton is not
+      // just a stuck loading state).
+      console.log(
+        `[CaratFlix] lazy import attempt ${attempt + 1} settled after ${Date.now() - startedAt}ms`
+      );
     }
   }
 }
 
 export function lazyWithRetry(load, delays = RETRY_DELAYS) {
+  // One inner lazy per `lazyWithRetry()` call (i.e. per import site), created
+  // on first render from a closure — see the note at the top of this file for
+  // why it must NOT live in React state. Reset it when the import rejects so a
+  // later mount starts over instead of replaying the cached rejection.
+  let inner = null;
   function LazyWithRetry(props) {
-    // One inner lazy per mount. A remount (ErrorBoundary "Try again") creates a
-    // new inner lazy, so the chunk is genuinely re-imported instead of replaying
-    // React.lazy's cached rejection.
-    const [inner] = useState(() => lazy(() => loadWithRetry(load, delays)));
+    if (!inner) {
+      inner = lazy(() =>
+        loadWithRetry(load, delays).catch((error) => {
+          inner = null;
+          throw error;
+        })
+      );
+    }
     return createElement(inner, props);
   }
 

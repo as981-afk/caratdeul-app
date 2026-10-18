@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
-import { useSession } from "../context/SessionContext.jsx";
+import { useSessionIdentity } from "../context/SessionContext.jsx";
 import {
   REACTION_EMOJIS,
   reactionsFor,
@@ -28,7 +28,7 @@ function fmtTime(seconds) {
 }
 
 export function VideoEngagement({ videoId, currentTime = 0, onSeek }) {
-  const { profileId } = useSession();
+  const { profileId } = useSessionIdentity();
   const [tab, setTab] = useState("reactions");
   // Seeded from storage on mount; VideoPlayer keys this component by videoId, so
   // a different video gets a fresh mount rather than a state reset.

@@ -949,6 +949,10 @@
 @media (max-width: 768px) {
   .navbar {
     padding: var(--space-5) var(--space-9);
+    /* Cheaper glass on phones: the header is on screen the whole time, so its
+       backdrop-filter is repainted on every scroll frame. */
+    backdrop-filter: blur(8px) saturate(140%);
+    -webkit-backdrop-filter: blur(8px) saturate(140%);
   }
   .search-bar input {
     width: 110px;

@@ -3,12 +3,13 @@ import SafeImg from "./SafeImg";
 import HeartButton from "./HeartButton";
 import CardProgress from "./CardProgress";
 import MemberChips from "./MemberChips";
+import CardThumb from "./CardThumb";
 import MemberModal from "./MemberModal";
 import MVModal from "./MVModal";
 import GoSeModal from "./GoSeModal";
 import VideoModal from "./VideoModal";
 import { useSession } from "../context/SessionContext.jsx";
-import { pressable, ytThumb } from "../utils/format";
+import { pressable } from "../utils/format";
 import { FAV_VIDEOS, FAV_MEMBERS, favIdFor, isFav } from "../utils/favorites";
 import { videoKeyFor } from "../utils/rowControls";
 import { MEMBERS } from "../data/MEMBERS";
@@ -78,13 +79,10 @@ export function MyListPage({ onClose, onWatchEnd }) {
               <div
                 className={isMember ? "bias-card" : "card"}
                 key={isMember ? `member-${item.name}` : favId}
-                style={{
-                  "--c1": item.c1,
-                  "--c2": item.c2,
-                  backgroundImage: !isMember && ytThumb(item.url) ? `url(${ytThumb(item.url)})` : undefined,
-                }}
+                style={{ "--c1": item.c1, "--c2": item.c2 }}
                 {...pressable(() => setActive({ type, item }))}
               >
+                {!isMember && <CardThumb url={item.url} />}
                 <div className="card-overlay"></div>
                 {isMember ? <span className="unit">{item.unit}</span> : <MemberChips sub={item.sub} />}
                 <HeartButton checked={isFav(favs, favKey, favId)} onClick={() => toggleFav(favKey, favId)} />

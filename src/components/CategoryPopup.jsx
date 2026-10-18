@@ -2,12 +2,13 @@ import { useState } from "react";
 import Modal from "./Modal";
 import HeartButton from "./HeartButton";
 import { useSession } from "../context/SessionContext.jsx";
-import { pressable, ytThumb } from "../utils/format";
+import { pressable } from "../utils/format";
 import { FAV_VIDEOS, favIdFor, isFav } from "../utils/favorites";
 import MVModal from "./MVModal";
 import GoSeModal from "./GoSeModal";
 import VideoModal from "./VideoModal";
 import MemberChips from "./MemberChips";
+import CardThumb from "./CardThumb";
 import "./rows.css";
 import "./CategoryPopup.css";
 
@@ -25,9 +26,10 @@ export function CategoryPopup({ title, items, countLabel, onClose, onWatchEnd, t
           <div
             className="card"
             key={favIdFor(item)}
-            style={{ "--c1": item.c1, "--c2": item.c2, backgroundImage: ytThumb(item.url) ? `url(${ytThumb(item.url)})` : undefined }}
+            style={{ "--c1": item.c1, "--c2": item.c2 }}
             {...pressable(() => setActive(item))}
           >
+              <CardThumb url={item.url} />
               <div className="card-overlay"></div>
               <MemberChips sub={item.sub} />
               <HeartButton checked={isFav(favs, FAV_VIDEOS, favIdFor(item))} onClick={() => toggleFav(FAV_VIDEOS, favIdFor(item))} />

@@ -3,11 +3,12 @@ import SafeImg from "./SafeImg";
 import HeartButton from "./HeartButton";
 import CardProgress from "./CardProgress";
 import MemberChips from "./MemberChips";
+import CardThumb from "./CardThumb";
 import MVModal from "./MVModal";
 import GoSeModal from "./GoSeModal";
 import VideoModal from "./VideoModal";
 import { useSession } from "../context/SessionContext.jsx";
-import { pressable, ytThumb } from "../utils/format";
+import { pressable } from "../utils/format";
 import { FAV_MEMBERS, FAV_VIDEOS, favIdFor, isFav } from "../utils/favorites";
 import { videoKeyFor } from "../utils/rowControls";
 import { getMemberById } from "../utils/memberMatch";
@@ -35,10 +36,10 @@ function MemberSection({ title, entries, onOpen }) {
             style={{
               "--c1": entry.item.c1,
               "--c2": entry.item.c2,
-              backgroundImage: ytThumb(entry.item.url) ? `url(${ytThumb(entry.item.url)})` : undefined,
             }}
             {...pressable(() => onOpen(entry))}
           >
+            <CardThumb url={entry.item.url} />
             <div className="card-overlay"></div>
             <MemberChips sub={entry.item.sub} />
             <HeartButton

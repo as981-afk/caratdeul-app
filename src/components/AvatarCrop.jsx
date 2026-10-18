@@ -86,6 +86,8 @@ export default function AvatarCrop({ file, onCancel, onConfirm }) {
   // Latest framing, read by the (stable) applyScale callback.
   const scaleRef = useRef(0);
   const offsetRef = useRef({ x: 0, y: 0 });
+  const framedImgRef = useRef(null);
+  const framedSizeRef = useRef(null);
 
   useEffect(() => { scaleRef.current = scale; }, [scale]);
   useEffect(() => { offsetRef.current = offset; }, [offset]);

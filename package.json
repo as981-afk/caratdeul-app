@@ -9,6 +9,7 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "sync:youtube": "node scripts/sync-youtube.mjs",
+    "check:videos": "node scripts/check-videos.mjs",
     "prebuild": "node scripts/sync-youtube.mjs --quiet"
   },
   "dependencies": {

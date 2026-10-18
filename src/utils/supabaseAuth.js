@@ -93,6 +93,16 @@ export async function signUpAccount({ username, displayName, email, password, av
       },
     },
   });
+    const alreadyUsed = "That email is already in use. Try logging in, or reset your password.";
+  if (error) {
+    const msg = String(error.message || "").toLowerCase();
+    if (msg.includes("already registered") || error.code === "user_already_exists") {
+      return { error: alreadyUsed };
+    }
+  }
+  if (data?.user && data.user.identities?.length === 0) {
+    return { error: alreadyUsed };
+  }
   if (error) return { error: error.message };
   const account = accountFromUser(data?.user);
   if (data?.session) saveCachedAccount(account);

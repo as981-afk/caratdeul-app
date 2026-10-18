@@ -26,21 +26,27 @@
 .login-glow {
   position: absolute;
   border-radius: 50%;
-  filter: blur(120px);
+  /* A radial-gradient falloff replaces `filter: blur(120px)`. The old blur made
+     the browser rasterise two ~500px layers and re-run a 120px blur on every
+     frame of the float animation below; the gradient is painted once and only
+     the (cheap) transform animates. Same soft blob, no per-frame filter.
+     (base.css carries a legacy copy of this component; keep the two in sync.) */
+  background-image: radial-gradient(closest-side, var(--glow), transparent 72%);
   opacity: 0.4;
+  will-change: transform;
 }
 .login-glow--rose {
+  --glow: var(--rose);
   width: 500px;
   height: 500px;
-  background: var(--rose);
   top: -10%;
   right: -5%;
   animation: loginFloat1 8s ease-in-out infinite alternate;
 }
 .login-glow--serenity {
+  --glow: var(--serenity);
   width: 450px;
   height: 450px;
-  background: var(--serenity);
   bottom: -10%;
   left: -5%;
   animation: loginFloat2 10s ease-in-out infinite alternate;
@@ -487,6 +493,18 @@
   .profile-picker-avatar,
   .profile-picker-plus {
     transition: none;
+  }
+}
+
+@media (max-width: 768px) {
+  /* No GPU headroom to spare on a phone: skip the decorative float loop and
+     keep the glass but at a much cheaper radius. Must live here (not only in
+     the legacy base.css copy) because this file's rules come later and win. */
+  .login-glow {
+    animation: none;
+  }
+  .login-card {
+    backdrop-filter: blur(10px);
   }
 }
 

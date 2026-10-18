@@ -1,10 +1,9 @@
 import { memo, useMemo, useState } from "react";
-import SafeImg from "./SafeImg";
 import Modal from "./Modal";
 import HeartButton from "./HeartButton";
 import { useSession } from "../context/SessionContext.jsx";
 import { FAV_VIDEOS, favIdFor, isFav } from "../utils/favorites";
-import { ytThumb } from "../utils/format";
+import { ytId } from "../utils/format";
 import channelData from "../data/youtubeVideos.json";
 import "./rows.css";
 import "./ContentCard.css";
@@ -23,9 +22,21 @@ import "./ContentCard.css";
 // How many cards "Load more" reveals at a time.
 const PAGE_SIZE = 12;
 
-// Thumbnail preference, largest first — mirroring how the sync script names
-// them. A video with no maxres simply falls through to high, then medium.
-const THUMB_ORDER = ["maxres", "high", "medium", "default"];
+// The still rungs the sync script stores, smallest first, with the real pixel
+// width YouTube serves. Only the rungs the JSON actually carries are advertised
+// in a srcset — a video with no maxres then offers a shorter ladder instead of a
+// candidate that would 404. `hq`/`sd` are 4:3, so the grid's `object-fit: cover`
+// crops their letterbox bars away.
+const THUMB_RUNGS = [
+  { key: "default", name: "default", width: 120 },
+  { key: "medium", name: "mqdefault", width: 320 },
+  { key: "high", name: "hqdefault", width: 480 },
+  { key: "maxres", name: "maxresdefault", width: 1280 },
+];
+
+// The full ladder, largest first — a sensible default when a hand-written entry
+// carries no `thumbnails` object at all (these two exist for every video).
+const FALLBACK_RUNGS = [THUMB_RUNGS[2], THUMB_RUNGS[1]];
 
 const VIEW_COUNT = new Intl.NumberFormat(undefined, {
   notation: "compact",
@@ -45,12 +56,59 @@ function videoList(payload) {
   return Array.isArray(raw) ? raw : [];
 }
 
-function bestThumbnail(video) {
-  for (const size of THUMB_ORDER) {
-    if (video?.thumbnails?.[size]) return video.thumbnails[size];
-  }
-  // Hand-written entries may carry only a URL; let the app's own helper guess.
-  return ytThumb(video?.url);
+function videoId(video) {
+  return video?.id || ytId(video?.url);
+}
+
+// The rungs this particular video can actually serve.
+function availableRungs(video) {
+  const present = THUMB_RUNGS.filter((rung) => video?.thumbnails?.[rung.key]);
+  return present.length ? present : FALLBACK_RUNGS;
+}
+
+// A `srcset` across the available rungs. Paired with a `sizes` hint on the img,
+// this is what stops a 280 kB maxres still being fetched for a 300px grid cell.
+function thumbSrcSet(video, format = "webp") {
+  const id = videoId(video);
+  if (!id) return null;
+  const dir = format === "webp" ? "vi_webp" : "vi";
+  const ext = format === "webp" ? "webp" : "jpg";
+  return availableRungs(video)
+    .map((rung) => `https://i.ytimg.com/${dir}/${id}/${rung.name}.${ext} ${rung.width}w`)
+    .join(", ");
+}
+
+// Single-URL fallback for the `<img src>` (the srcset, when usable, wins).
+function thumbFallback(video, format = "jpeg") {
+  const id = videoId(video);
+  if (!id) return null;
+  const { name } = availableRungs(video).at(-1);
+  const dir = format === "webp" ? "vi_webp" : "vi";
+  const ext = format === "webp" ? "webp" : "jpg";
+  return `https://i.ytimg.com/${dir}/${id}/${name}.${ext}`;
+}
+
+// Grid artwork: WebP first with the JPEG rung of the same size as the fallback,
+// and `sizes` matching the responsive `.videos-grid` so the browser downloads
+// the smallest rung that fits.
+function GridThumb({ video, loading = "lazy", sizes = "(max-width: 600px) 90vw, (max-width: 1000px) 45vw, 320px" }) {
+  const src = thumbFallback(video, "jpeg");
+  if (!src) return <div className="videos-thumb-fallback" />;
+  return (
+    <picture>
+      <source type="image/webp" srcSet={thumbSrcSet(video, "webp")} sizes={sizes} />
+      <img
+        src={src}
+        srcSet={thumbSrcSet(video, "jpeg")}
+        sizes={sizes}
+        alt=""
+        width={480}
+        height={270}
+        loading={loading}
+        decoding="async"
+      />
+    </picture>
+  );
 }
 
 // 3:07 / 1:02:03. Returns "" when the source had no duration (the RSS
@@ -82,7 +140,6 @@ function PlayerModal({ video, onClose }) {
   const { favs, toggleFav } = useSession();
   const [playing, setPlaying] = useState(false);
 
-  const poster = bestThumbnail(video);
   const date = publishedLabel(video.publishedAt);
   const duration = durationLabel(video);
   const views = viewLabel(video.viewCount);
@@ -105,7 +162,11 @@ function PlayerModal({ video, onClose }) {
             onClick={() => setPlaying(true)}
             aria-label={`Play ${video.title}`}
           >
-            <SafeImg src={poster} alt="" loading="eager" width={1280} height={720} />
+            <GridThumb
+              video={video}
+              loading="eager"
+              sizes="(max-width: 900px) 92vw, 854px"
+            />
             <span className="videos-poster-play" aria-hidden="true">
               {PLAY_GLYPH}
             </span>
@@ -237,7 +298,7 @@ export function VideosPage({ onClose }) {
                     onClick={() => setActive(video)}
                     aria-label={`Play ${video.title}`}
                   >
-                    <SafeImg src={bestThumbnail(video)} alt="" width={480} height={270} />
+                    <GridThumb video={video} />
                     <span className="videos-thumb-play" aria-hidden="true">
                       {PLAY_GLYPH}
                     </span>

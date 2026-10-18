@@ -90,6 +90,14 @@
   to { opacity: 0; }
 }
 
+@media (max-width: 768px) {
+  /* A full-screen frosted overlay is the single most expensive surface the app
+     paints on a phone; keep the dim + a light blur only. */
+  .modal-overlay {
+    backdrop-filter: blur(4px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .modal-card,
   .modal-overlay--closing {

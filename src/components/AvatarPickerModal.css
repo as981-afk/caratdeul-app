@@ -302,3 +302,7 @@
     transition: none;
   }
 }
+
+.modal-overlay.avatar-picker-overlay {
+  z-index: 250;
+}

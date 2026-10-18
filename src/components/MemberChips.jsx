@@ -1,4 +1,4 @@
-import { useSession } from "../context/SessionContext.jsx";
+import { useSessionIdentity } from "../context/SessionContext.jsx";
 import { memberId, membersInSub } from "../utils/memberMatch";
 import "./MemberChips.css";
 
@@ -6,7 +6,7 @@ import "./MemberChips.css";
 // names member(s) ("DINO", "DK AND SEUNGKWAN") each name becomes a chip that
 // links to that member's page; otherwise it falls back to the plain tag.
 export function MemberChips({ sub }) {
-  const { openMember } = useSession();
+  const { openMember } = useSessionIdentity();
   const members = membersInSub(sub);
 
   if (!members.length) return <span className="tag">{sub}</span>;

@@ -176,7 +176,7 @@ export function AvatarPickerModal({ current, onSave, onClose, subtitle }) {
         deleteAvatarFile(originalCustomPath).catch(() => {});
       }
 
-      toast.push({
+            toast?.push?.({
         emoji: "📸",
         title: "Avatar updated",
         message: pendingBlob ? "Your new photo was uploaded." : "Saved to your profile.",
@@ -202,7 +202,7 @@ export function AvatarPickerModal({ current, onSave, onClose, subtitle }) {
       label={cropFile ? "Crop your photo" : "Choose an avatar"}
       onClose={cropFile ? closeCrop : handleCancel}
       className={`avatar-picker${closing ? " avatar-picker--closing" : ""}`}
-      overlayClassName={closing ? "modal-overlay--closing" : undefined}
+     overlayClassName={`avatar-picker-overlay${closing ? " modal-overlay--closing" : ""}`}
     >
       {cropFile ? (
         <AvatarCrop file={cropFile} onCancel={closeCrop} onConfirm={handleCropped} />

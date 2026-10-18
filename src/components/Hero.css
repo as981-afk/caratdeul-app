@@ -31,6 +31,9 @@
   height: 120%;
   background: radial-gradient(ellipse at center, rgba(242, 169, 193, 0.15), transparent 65%);
   animation: billboardGlow 8s ease-in-out infinite alternate;
+  /* Hint the compositor that only transform/opacity change, so the halo keeps
+     its own layer instead of repainting the whole billboard each frame. */
+  will-change: transform, opacity;
 }
 .billboard-bg::after {
   content: "";
@@ -299,6 +302,14 @@
   .billboard-content {
     padding: 0 var(--space-9) var(--space-11);
     max-width: 560px;
+  }
+  /* No GPU headroom to spare: skip the decorative halo loop and lighten the
+     frosted info button. */
+  .billboard-bg::before {
+    animation: none;
+  }
+  .billboard-btn-info {
+    backdrop-filter: blur(4px);
   }
 }
 @media (max-width: 600px) {

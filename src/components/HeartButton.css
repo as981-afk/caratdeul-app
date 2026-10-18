@@ -56,6 +56,14 @@
   top: 10px;
   left: 10px;
 }
+@media (max-width: 768px) {
+  /* One heart per card in a long row, each with its own backdrop-filter layer.
+     It sits on a dark scrim, so the 4px blur buys nothing on a phone. */
+  .heart-btn {
+    backdrop-filter: none;
+  }
+}
+
 /* Respect prefers-reduced-motion: keep the state change (filled/outline +
    color) but drop the pop so nothing pulses for users who opt out. */
 @media (prefers-reduced-motion: reduce) {

@@ -8,6 +8,18 @@
     <meta name="description" content="CARATFLIX — a demo streaming UI for SEVENTEEN content." />
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
+    <!-- Fonts. Preconnecting lets the browser open the TLS connection to the
+         font hosts while the HTML is still being parsed, and a real stylesheet
+         <link> is discovered immediately instead of waiting for base.css to be
+         parsed (which is what the old @import did). Only the weights the UI
+         actually uses are requested: Fraunces 600/700/900 for display type and
+         Inter 400/500/600/700 for body copy. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700;900&family=Inter:wght@400;500;600;700&display=swap"
+    />
     <title>caratdeul</title>
     <script>
       // Apply the active profile's theme + accent before first paint so users

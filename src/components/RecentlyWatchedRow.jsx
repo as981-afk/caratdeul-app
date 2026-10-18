@@ -1,6 +1,7 @@
 import { memo } from "react";
-import { pressable, ytThumb, timeAgo } from "../utils/format";
+import { pressable, timeAgo } from "../utils/format";
 import MemberChips from "./MemberChips";
+import CardThumb from "./CardThumb";
 import "./ContinueWatching.css";
 
 export function RecentlyWatchedRow({ items }) {
@@ -17,9 +18,10 @@ export function RecentlyWatchedRow({ items }) {
           <div
             className="continue-card"
             key={item.videoId}
-            style={{ "--c1": item.c1, "--c2": item.c2, backgroundImage: ytThumb(item.url) ? `url(${ytThumb(item.url)})` : undefined }}
+            style={{ "--c1": item.c1, "--c2": item.c2 }}
             {...pressable(() => openVideo(item.url))}
           >
+            <CardThumb url={item.url} sizes="(max-width: 600px) 230px, 280px" />
             <div className="card-overlay"></div>
             <MemberChips sub={item.sub} />
             <div className="title">{item.title}</div>

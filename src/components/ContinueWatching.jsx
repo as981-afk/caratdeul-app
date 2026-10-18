@@ -1,6 +1,7 @@
 import { memo } from "react";
-import { pressable, ytThumb } from "../utils/format";
+import { pressable } from "../utils/format";
 import MemberChips from "./MemberChips";
+import CardThumb from "./CardThumb";
 import "./ContinueWatching.css";
 
 // "m:ss left" derived from the stored seconds; falls back to the percentage
@@ -32,9 +33,10 @@ export function ContinueWatching({ items, onOpen, onRemove }) {
           <div
             className="continue-card"
             key={item.videoId}
-            style={{ "--c1": item.c1, "--c2": item.c2, backgroundImage: ytThumb(item.url) ? `url(${ytThumb(item.url)})` : undefined }}
+            style={{ "--c1": item.c1, "--c2": item.c2 }}
             {...pressable(() => onOpen?.(item))}
           >
+            <CardThumb url={item.url} sizes="(max-width: 600px) 230px, 280px" />
             <div className="card-overlay"></div>
             <MemberChips sub={item.sub} />
             {onRemove && (

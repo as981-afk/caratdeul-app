@@ -1,14 +1,15 @@
-import { memo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import SafeImg from "./SafeImg";
 import HeartButton from "./HeartButton";
 import CardProgress from "./CardProgress";
 import MemberChips from "./MemberChips";
+import CardThumb from "./CardThumb";
 import MemberModal from "./MemberModal";
 import MVModal from "./MVModal";
 import GoSeModal from "./GoSeModal";
 import VideoModal from "./VideoModal";
 import { useSession } from "../context/SessionContext.jsx";
-import { pressable, ytThumb } from "../utils/format";
+import { pressable } from "../utils/format";
 import { FAV_VIDEOS, FAV_MEMBERS, favIdFor, isFav } from "../utils/favorites";
 import { videoKeyFor } from "../utils/rowControls";
 import { MEMBERS } from "../data/MEMBERS";
@@ -27,25 +28,34 @@ export function MyListRow({ onWatchEnd, onOpenList }) {
   const { favs, toggleFav, progressFor, isWatched } = useSession();
   const [active, setActive] = useState(null);
 
-  const favMembers = MEMBERS.filter((m) => isFav(favs, FAV_MEMBERS, m.name));
-  const favMVs = MVS.filter((m) => isFav(favs, FAV_VIDEOS, favIdFor(m)));
-  const favGoSe = GOING_SEVENTEEN.filter((g) => isFav(favs, FAV_VIDEOS, favIdFor(g)));
-  const favSongs = SIDE_TRACKS.filter((s) => isFav(favs, FAV_VIDEOS, favIdFor(s)));
-  const favChoreo = CHOREO_VIDEOS.filter((c) => isFav(favs, FAV_VIDEOS, favIdFor(c)));
-  const favChannel = CHANNEL_VIDEOS.filter((v) => isFav(favs, FAV_VIDEOS, favIdFor(v)));
-  const favOthers = [...NANA_TOUR, ...CONCERTS].filter((c) => isFav(favs, FAV_VIDEOS, favIdFor(c)));
+  // The seven catalogues are scanned on every render otherwise — and the session
+  // context re-renders this row whenever watch progress or the history moves,
+  // even though only `favs` can change which items are saved. Memoising keeps a
+  // progress tick from re-filtering the whole catalogue behind the skeleton.
+  const { sections, total } = useMemo(() => {
+    const favMembers = MEMBERS.filter((m) => isFav(favs, FAV_MEMBERS, m.name));
+    const favMVs = MVS.filter((m) => isFav(favs, FAV_VIDEOS, favIdFor(m)));
+    const favGoSe = GOING_SEVENTEEN.filter((g) => isFav(favs, FAV_VIDEOS, favIdFor(g)));
+    const favSongs = SIDE_TRACKS.filter((s) => isFav(favs, FAV_VIDEOS, favIdFor(s)));
+    const favChoreo = CHOREO_VIDEOS.filter((c) => isFav(favs, FAV_VIDEOS, favIdFor(c)));
+    const favChannel = CHANNEL_VIDEOS.filter((v) => isFav(favs, FAV_VIDEOS, favIdFor(v)));
+    const favOthers = [...NANA_TOUR, ...CONCERTS].filter((c) => isFav(favs, FAV_VIDEOS, favIdFor(c)));
 
-  const sections = [
-    { label: "Favorite Members", items: favMembers, type: "member" },
-    { label: "Favorite MVs", items: favMVs, type: "mv" },
-    { label: "Favorite Going Seventeen", items: favGoSe, type: "gose" },
-    { label: "Favorite Songs", items: favSongs, type: "song" },
-    { label: "Favorite Choreography", items: favChoreo, type: "choreo" },
-    { label: "Favorite Uploads", items: favChannel, type: "video" },
-    { label: "Other Favorites", items: favOthers, type: "video" },
-  ].filter((s) => s.items.length > 0);
+    const built = [
+      { label: "Favorite Members", items: favMembers, type: "member" },
+      { label: "Favorite MVs", items: favMVs, type: "mv" },
+      { label: "Favorite Going Seventeen", items: favGoSe, type: "gose" },
+      { label: "Favorite Songs", items: favSongs, type: "song" },
+      { label: "Favorite Choreography", items: favChoreo, type: "choreo" },
+      { label: "Favorite Uploads", items: favChannel, type: "video" },
+      { label: "Other Favorites", items: favOthers, type: "video" },
+    ].filter((s) => s.items.length > 0);
 
-  const total = sections.reduce((n, s) => n + s.items.length, 0);
+    return {
+      sections: built,
+      total: built.reduce((n, s) => n + s.items.length, 0),
+    };
+  }, [favs]);
 
   const openItem = (item, type) => setActive({ item, type });
 
@@ -81,9 +91,10 @@ export function MyListRow({ onWatchEnd, onOpenList }) {
               <div
                 className={sec.type === "member" ? "bias-card" : "card"}
                 key={sec.type === "member" ? item.name : favIdFor(item)}
-                style={{ "--c1": item.c1, "--c2": item.c2, backgroundImage: item.url && ytThumb(item.url) ? `url(${ytThumb(item.url)})` : item.img ? `url(${item.img})` : undefined }}
+                style={{ "--c1": item.c1, "--c2": item.c2 }}
                 {...pressable(() => openItem(item, sec.type))}
               >
+                {sec.type !== "member" && <CardThumb url={item.url} />}
                 <div className="card-overlay"></div>
                 {sec.type === "member" ? (
                   <span className="unit">{item.unit}</span>

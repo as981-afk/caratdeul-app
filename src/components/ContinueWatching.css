@@ -60,11 +60,11 @@
   flex-direction: column;
   justify-content: flex-end;
   padding: var(--space-6);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
 }
 .continue-card:hover {
   transform: translateY(-8px) scale(1.05);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
 }
 .continue-card .card-overlay {
   opacity: 0.55;

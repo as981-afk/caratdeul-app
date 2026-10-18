@@ -2,8 +2,9 @@ import { memo } from "react";
 import HeartButton from "./HeartButton";
 import CardProgress from "./CardProgress";
 import MemberChips from "./MemberChips";
+import CardThumb from "./CardThumb";
 import { useSession } from "../context/SessionContext.jsx";
-import { pressable, ytThumb } from "../utils/format";
+import { pressable } from "../utils/format";
 import { FAV_VIDEOS, favIdFor, isFav } from "../utils/favorites";
 import { videoKeyFor } from "../utils/rowControls";
 import "./ContentCard.css";
@@ -22,15 +23,15 @@ export function ContentCard({ entry, onOpen }) {
   const { favs, toggleFav, progressFor, isWatched } = useSession();
   const { item } = entry;
   const key = videoKeyFor(item);
-  const thumb = ytThumb(item.url);
   const label = [entry.badge, entry.year, item.sub || entry.album].filter(Boolean).join(" · ");
 
   return (
     <div
       className="card"
-      style={{ "--c1": item.c1, "--c2": item.c2, backgroundImage: thumb ? `url(${thumb})` : undefined }}
+      style={{ "--c1": item.c1, "--c2": item.c2 }}
       {...pressable(() => onOpen(entry))}
     >
+      <CardThumb url={item.url} />
       <div className="card-overlay"></div>
       <MemberChips sub={item.sub} />
       <HeartButton checked={isFav(favs, FAV_VIDEOS, favIdFor(item))} onClick={() => toggleFav(FAV_VIDEOS, favIdFor(item))} />

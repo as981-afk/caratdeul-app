@@ -5,8 +5,9 @@ import CategoryPopup from "./CategoryPopup";
 import RowControls from "./RowControls";
 import CardProgress from "./CardProgress";
 import MemberChips from "./MemberChips";
+import CardThumb from "./CardThumb";
 import { useSession } from "../context/SessionContext.jsx";
-import { pressable, ytThumb } from "../utils/format";
+import { pressable } from "../utils/format";
 import { FAV_VIDEOS, favIdFor, isFav } from "../utils/favorites";
 import { applyRowControls, groupValues, videoKeyFor } from "../utils/rowControls";
 import "./rows.css";
@@ -69,9 +70,10 @@ export function VideoRow({ id, title, items, countLabel, onWatchStart, onWatchEn
               <div
                 className="card"
                 key={favIdFor(item)}
-                style={{ "--c1": item.c1, "--c2": item.c2, backgroundImage: ytThumb(item.url) ? `url(${ytThumb(item.url)})` : undefined }}
+                style={{ "--c1": item.c1, "--c2": item.c2 }}
                 {...pressable(() => setActive(item))}
               >
+                <CardThumb url={item.url} />
                 <div className="card-overlay"></div>
                 <MemberChips sub={item.sub} />
                 <HeartButton checked={isFav(favs, FAV_VIDEOS, favIdFor(item))} onClick={() => toggleFav(FAV_VIDEOS, favIdFor(item))} />

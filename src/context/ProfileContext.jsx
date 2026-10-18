@@ -50,7 +50,12 @@ export function ProfileProvider({ accountId, accountName, children }) {
       return undefined;
     }
     let alive = true;
-    setProfilesLoading(true);
+    // Deliberately NOT setting profilesLoading back to true here. The state
+    // starts true only when there is no cached profile list to show; flipping it
+    // on every mount swapped the already-rendered app for <BootSplash/>, which
+    // tore down and remounted the whole tree (and restarted the sync pull) on
+    // every single boot. With a cache we render straight away and refresh this
+    // list in the background instead.
     bootstrapProfiles(accountId, accountName)
       .then((list) => {
         if (!alive) return;

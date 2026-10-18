@@ -149,7 +149,10 @@
   min-width: 280px;
   height: 170px;
   border-radius: 10px;
-  background-color: linear-gradient(145deg, var(--c1), var(--c2));
+  /* Must be `background`, not `background-color`: a gradient is an image, so the
+     `background-color` form is an invalid declaration and gets dropped, leaving
+     a card with no artwork with nothing behind it but the page (black). */
+  background: linear-gradient(145deg, var(--c1), var(--c2));
   background-size: cover;
   background-position: center;
   flex-shrink: 0;
@@ -160,8 +163,27 @@
   flex-direction: column;
   justify-content: flex-end;
   padding: var(--space-6);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  /* Repeated dozens of times per page, so both states are kept tight: a large
+     blur on a card that scales and transitions is the priciest repaint here.
+     (base.css carries a legacy copy of this component; keep the two in sync.) */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
 }
+/* Card artwork painted by a real <img> (see CardThumb) rather than an inline
+   background-image, so the browser can lazy-load and async-decode it. Absolute
+   so it sits under the scrim; `picture` is inline by default, so the img
+   carries the sizing. */
+.card-thumb,
+.card-thumb-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.card-thumb-img {
+  object-fit: cover;
+  z-index: 0;
+}
+
 .card-overlay {
   position: absolute;
   inset: 0;
@@ -175,7 +197,34 @@
 .card:hover {
   transform: translateY(-8px) scale(1.05);
   clip-path: polygon(0 6%, 94% 0, 100% 94%, 6% 100%);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+}
+/* Marks a card whose artwork never arrived — a missing video id, or an id that
+   i.ytimg.com answers with a 404. Without it the tile just reads as an empty
+   black card, which looks like a broken app rather than an unavailable clip.
+   `.card-thumb-playlist` is the same chip for a playlist-only url: no still, but
+   the card still opens (the modal offers "Open on YouTube"), so only the label
+   differs. Decorative only, so they must never eat the card's click. */
+.card-thumb-missing,
+.card-thumb-playlist {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  font-size: 0.62rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: rgba(10, 11, 18, 0.62);
+  color: var(--on-media);
+  padding: 3px var(--space-3);
+  border-radius: 20px;
+  pointer-events: none;
+}
+/* A card whose clip is unusable drops its click (see `pressable` in
+   utils/format.js), so it must not advertise one either. `:has` keeps this in
+   one place instead of asking every row to know about the badge. */
+.card:has(.card-thumb-missing) {
+  cursor: default;
 }
 .card .tag {
   position: absolute;
@@ -215,11 +264,11 @@
   position: relative;
   overflow: hidden;
   transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
 }
 .bias-card:hover {
   transform: translateY(-10px) scale(1.05);
-  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.55);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.42);
 }
 .bias-card .unit {
   position: absolute;

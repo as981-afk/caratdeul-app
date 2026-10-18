@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import { QUIZZES, getQuiz, scoreMemberQuiz, scoreSongQuiz } from "../data/QUIZZES";
-import { useSession } from "../context/SessionContext.jsx";
+import { useSessionIdentity } from "../context/SessionContext.jsx";
 import { useTheme } from "../ThemeContext";
 import { getAccent } from "../data/AVATARS";
 import { loadQuizResults, saveQuizResult } from "../utils/quizStore";
@@ -14,7 +14,7 @@ import "./QuizPage.css";
 // Attempts are written per profile (utils/quizStore.js) so the menu can show the
 // last result and the badge engine can unlock "Quiz Master".
 export function QuizPage({ onClose }) {
-  const { profileId } = useSession();
+  const { profileId } = useSessionIdentity();
   const { accent } = useTheme();
   const accentInfo = useMemo(() => getAccent(accent) || {}, [accent]);
 

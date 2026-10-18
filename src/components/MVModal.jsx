@@ -1,5 +1,6 @@
 import { useCallback, useRef } from "react";
 import Modal from "./Modal";
+import SafeImg from "./SafeImg";
 import VideoPlayer from "./VideoPlayer";
 import HeartButton from "./HeartButton";
 import { useSession } from "../context/SessionContext.jsx";
@@ -82,7 +83,7 @@ export function MVModal({ mv, onClose, onWatchEnd }) {
   const videoId = ytId(mv.url);
   return (
     <Modal label={mv.title} onClose={handleClose} className="mv-modal" style={{ "--c1": mv.c1, "--c2": mv.c2 }}>
-      {videoId && (
+      {videoId ? (
         <VideoPlayer
           videoId={videoId}
           title={mv.title}
@@ -93,6 +94,20 @@ export function MVModal({ mv, onClose, onWatchEnd }) {
           onSave={handleSave}
           onFinish={handleFinish}
         />
+      ) : (
+        // No playable id (a playlist-only url, or a missing one): show the poster
+        // and say so, instead of an empty modal body. Same shape as VideoModal.
+        <div className="mv-modal-fallback">
+          {ytThumb(mv.url) ? (
+            <SafeImg className="mv-modal-fallback-img" src={ytThumb(mv.url)} alt="" width={1280} height={720} />
+          ) : null}
+          <p className="mv-modal-fallback-note">
+            This music video has no playable video id yet, so it can’t play inside the app.
+          </p>
+          <a className="mv-modal-link" href={mv.url} target="_blank" rel="noopener noreferrer">
+            Open on YouTube
+          </a>
+        </div>
       )}
       <div className="mv-modal-info">
         <div className="mv-modal-meta">

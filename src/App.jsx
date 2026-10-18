@@ -11,7 +11,7 @@ import {
 import { SyncProvider } from "./context/SyncContext.jsx";
 import { CW_KEY, RECENT_KEY, removeFromCW } from "./utils/watchHistory";
 import { scrollToIdWhenReady } from "./utils/format";
-import SessionContext from "./context/SessionContext.jsx";
+import { SessionProvider } from "./context/SessionProvider.jsx";
 import { FavoritesProvider, useFavoritesContext } from "./context/FavoritesContext.jsx";
 import { ProfileProvider, useProfiles } from "./context/ProfileContext.jsx";
 import { ToastProvider } from "./context/ToastContext.jsx";
@@ -37,6 +37,7 @@ import VideoModal from "./components/VideoModal";
 import MyBiasRow from "./components/MyBiasRow";
 import EventBanners from "./components/EventBanners";
 import RowSkeleton from "./components/RowSkeleton";
+import DeferredRow from "./components/DeferredRow";
 import { MemberPageSkeleton, MembersPageSkeleton } from "./components/MemberSkeletons";
 import "./App.css";
 
@@ -377,27 +378,19 @@ function AppContent({ user, profileId, onLogout }) {
     refreshWatched();
   }, [refreshCW, refreshRecent, refreshWatched]);
 
-  const sessionValue = useMemo(
-    () => ({
-      user,
-      profile: activeProfile,
-      profileId,
-      avatar,
-      setAvatar,
-      favs,
-      toggleFav,
-      setFavMembers,
-      replaceFavs,
-      refreshFavs,
-      watched,
-      markWatched,
-      unmarkWatched,
-      progressFor,
-      isWatched,
-      openMember,
-      openMembers,
-    }),
-    [user, activeProfile, profileId, avatar, setAvatar, favs, toggleFav, setFavMembers, replaceFavs, refreshFavs, watched, markWatched, unmarkWatched, progressFor, isWatched, openMember, openMembers]
+  // Session state is published through two contexts so that a My List / watch
+  // write no longer re-renders the parts of the tree that only care about
+  // identity (and vice versa). `identity` changes on login, profile switch or
+  // avatar edit; `library` changes on almost every interaction. SessionProvider
+  // still exposes the merged view as `useSession()` for existing consumers.
+  const sessionIdentity = useMemo(
+    () => ({ user, profile: activeProfile, profileId, avatar, setAvatar, openMember, openMembers }),
+    [user, activeProfile, profileId, avatar, setAvatar, openMember, openMembers]
+  );
+
+  const sessionLibrary = useMemo(
+    () => ({ favs, toggleFav, setFavMembers, replaceFavs, refreshFavs, watched, markWatched, unmarkWatched, progressFor, isWatched }),
+    [favs, toggleFav, setFavMembers, replaceFavs, refreshFavs, watched, markWatched, unmarkWatched, progressFor, isWatched]
   );
 
   const stats = useMemo(
@@ -444,7 +437,7 @@ function AppContent({ user, profileId, onLogout }) {
     : "home";
 
   return (
-    <SessionContext.Provider value={sessionValue}>
+    <SessionProvider identity={sessionIdentity} library={sessionLibrary}>
       <ToastProvider>
         <BadgeProvider profile={activeProfile} refreshToken={badgeToken}>
           <div>
@@ -542,44 +535,66 @@ function AppContent({ user, profileId, onLogout }) {
                       <CaratPick onWatchEnd={handleWatchEnd} />
                     </Suspense>
                     <EventBanners notifications={activeProfile?.notifications} />
-                    <MyBiasRow members={MEMBERS} onOpenMembers={openMembers} />
-                    <Suspense fallback={<RowSkeleton id="member-playlist" title="Member playlist" />}>
-                      <FancamFocus
-                        label="Fancam focus"
-                        hint="Focus the generated playlist below on one member"
-                        value={focusMemberId}
-                        onFocus={handleFancamFocus}
-                      />
-                      <MemberPlaylistRow
-                        selectedMemberId={focusMemberId}
-                        onMemberChange={setFocusMemberId}
-                        onWatchEnd={handleWatchEnd}
-                      />
-                    </Suspense>
+                    {/* Rows below the fold are mounted by DeferredRow as they
+                        approach the viewport; the shared RowSkeleton keeps the
+                        page height (and the section ids) stable while a row
+                        waits its turn, so nothing shifts when it streams in. */}
+                    <DeferredRow id="my-bias" title="Members">
+                      <MyBiasRow members={MEMBERS} onOpenMembers={openMembers} />
+                    </DeferredRow>
+                    <DeferredRow id="member-playlist" title="Member playlist">
+                      <Suspense fallback={<RowSkeleton id="member-playlist" title="Member playlist" />}>
+                        <FancamFocus
+                          label="Fancam focus"
+                          hint="Focus the generated playlist below on one member"
+                          value={focusMemberId}
+                          onFocus={handleFancamFocus}
+                        />
+                        <MemberPlaylistRow
+                          selectedMemberId={focusMemberId}
+                          onMemberChange={setFocusMemberId}
+                          onWatchEnd={handleWatchEnd}
+                        />
+                      </Suspense>
+                    </DeferredRow>
                     <Suspense fallback={<RowSkeleton title="Latest video" cards={1} />}>
                       <LatestVideo />
                     </Suspense>
                     <ContinueWatching items={cwItems} onOpen={setResumeItem} onRemove={handleRemoveFromCW} />
                     <RecentlyWatchedRow items={recentItems} />
-                    <Suspense fallback={<RowSkeleton id="my-list" title="My List" cards={4} />}>
-                      <MyListRow onWatchEnd={handleWatchEnd} onOpenList={() => setShowList(true)} />
-                    </Suspense>
-                    <VideoRow id="nana-tour" title="Nana Tour" items={NANA_TOUR} countLabel="episodes" onWatchEnd={handleWatchEnd} />
-                    <Suspense fallback={<RowSkeleton id="going-seventeen" title="Going Seventeen" />}>
-                      <GoSeRow onWatchEnd={handleWatchEnd} />
-                    </Suspense>
-                    <Suspense fallback={<RowSkeleton id="concerts" title="Concerts" />}>
-                      <ConcertsRow onWatchEnd={handleWatchEnd} />
-                    </Suspense>
-                    <Suspense fallback={<RowSkeleton id="side-tracks" title="Side Tracks" />}>
-                      <SideTracksRow onWatchEnd={handleWatchEnd} />
-                    </Suspense>
-                    <Suspense fallback={<RowSkeleton id="mvs" title="Music videos" />}>
-                      <MVRow onWatchEnd={handleWatchEnd} />
-                    </Suspense>
-                    <Suspense fallback={<RowSkeleton id="choreography" title="Choreography" />}>
-                      <ChoreographyRow onWatchEnd={handleWatchEnd} onOpenAll={openChoreography} />
-                    </Suspense>
+                    <DeferredRow id="my-list" title="My List" cards={4}>
+                      <Suspense fallback={<RowSkeleton id="my-list" title="My List" cards={4} />}>
+                        <MyListRow onWatchEnd={handleWatchEnd} onOpenList={() => setShowList(true)} />
+                      </Suspense>
+                    </DeferredRow>
+                    <DeferredRow id="nana-tour" title="Nana Tour">
+                      <VideoRow id="nana-tour" title="Nana Tour" items={NANA_TOUR} countLabel="episodes" onWatchEnd={handleWatchEnd} />
+                    </DeferredRow>
+                    <DeferredRow id="going-seventeen" title="Going Seventeen">
+                      <Suspense fallback={<RowSkeleton id="going-seventeen" title="Going Seventeen" />}>
+                        <GoSeRow onWatchEnd={handleWatchEnd} />
+                      </Suspense>
+                    </DeferredRow>
+                    <DeferredRow id="concerts" title="Concerts">
+                      <Suspense fallback={<RowSkeleton id="concerts" title="Concerts" />}>
+                        <ConcertsRow onWatchEnd={handleWatchEnd} />
+                      </Suspense>
+                    </DeferredRow>
+                    <DeferredRow id="side-tracks" title="Side Tracks">
+                      <Suspense fallback={<RowSkeleton id="side-tracks" title="Side Tracks" />}>
+                        <SideTracksRow onWatchEnd={handleWatchEnd} />
+                      </Suspense>
+                    </DeferredRow>
+                    <DeferredRow id="mvs" title="Music videos">
+                      <Suspense fallback={<RowSkeleton id="mvs" title="Music videos" />}>
+                        <MVRow onWatchEnd={handleWatchEnd} />
+                      </Suspense>
+                    </DeferredRow>
+                    <DeferredRow id="choreography" title="Choreography">
+                      <Suspense fallback={<RowSkeleton id="choreography" title="Choreography" />}>
+                        <ChoreographyRow onWatchEnd={handleWatchEnd} onOpenAll={openChoreography} />
+                      </Suspense>
+                    </DeferredRow>
                   </>
                 )}
               </div>
@@ -606,6 +621,6 @@ function AppContent({ user, profileId, onLogout }) {
           </div>
         </BadgeProvider>
       </ToastProvider>
-    </SessionContext.Provider>
+    </SessionProvider>
   );
 }

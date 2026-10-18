@@ -7,6 +7,24 @@
   },
   "videos": [
     {
+      "id": "O-brsZFz6fc",
+      "title": "[DK TIME] 오늘도겸 #1 | 입대 전 일상 모음.zip ⚾🫡",
+      "description": "",
+      "publishedAt": "2026-10-18T12:59:59+00:00",
+      "duration": {
+        "iso": null,
+        "seconds": null
+      },
+      "thumbnails": {
+        "maxres": null,
+        "high": "https://i.ytimg.com/vi/O-brsZFz6fc/hqdefault.jpg",
+        "medium": "https://i.ytimg.com/vi/O-brsZFz6fc/mqdefault.jpg",
+        "default": "https://i.ytimg.com/vi/O-brsZFz6fc/default.jpg"
+      },
+      "viewCount": null,
+      "url": "https://www.youtube.com/watch?v=O-brsZFz6fc"
+    },
+    {
       "id": "YW3BxZZSbJc",
       "title": "[EVERY WONWOO] 제 카메라들을 소개합니다",
       "description": "",

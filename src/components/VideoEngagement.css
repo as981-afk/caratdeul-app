@@ -1,0 +1,297 @@
+/* --- Player engagement panel (reactions + comments) ------------------------- */
+
+.video-engagement {
+  margin-top: var(--space-6);
+  border: 1px solid var(--line-2);
+  border-radius: 14px;
+  background: var(--surface-1);
+  overflow: hidden;
+}
+
+.engagement-tabs {
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4) 0;
+  border-bottom: 1px solid var(--line-1);
+}
+.engagement-tab {
+  appearance: none;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  padding: var(--space-3) var(--space-4);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.engagement-tab:hover {
+  color: var(--text-white);
+}
+.engagement-tab--active {
+  color: var(--text-white);
+  border-bottom-color: var(--rose);
+}
+
+.engagement-panel {
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+.engagement-empty {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+/* --- Reactions -------------------------------------------------------------- */
+
+.reaction-picker {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.reaction-hint {
+  font-size: 0.78rem;
+  color: var(--text-base);
+}
+.reaction-hint strong {
+  color: var(--text-white);
+}
+.reaction-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.reaction-btn {
+  position: relative;
+  appearance: none;
+  border: 1px solid var(--overlay-border);
+  background: var(--overlay-bg);
+  border-radius: 12px;
+  font-size: 1.15rem;
+  line-height: 1;
+  padding: var(--space-3) var(--space-4);
+  cursor: pointer;
+  transition: transform 0.12s ease, border-color 0.15s ease;
+}
+.reaction-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--line-3);
+}
+.reaction-btn-count {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--rose);
+  color: var(--on-accent);
+  font-size: 0.6rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reaction-timeline {
+  position: relative;
+  height: 30px;
+  margin: var(--space-2) 0;
+}
+.reaction-timeline-track {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 4px;
+  transform: translateY(-50%);
+  border-radius: 999px;
+  background: var(--veil-2);
+}
+.reaction-marker {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  appearance: none;
+  border: none;
+  background: var(--surface-2);
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 0.85rem;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+.reaction-marker:hover {
+  z-index: 2;
+  transform: translate(-50%, -50%) scale(1.18);
+}
+
+.reaction-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-height: 160px;
+  overflow-y: auto;
+}
+.reaction-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.reaction-row-jump {
+  flex: 1;
+  appearance: none;
+  border: none;
+  background: var(--veil-1);
+  border-radius: 8px;
+  padding: var(--space-3) var(--space-4);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  color: var(--text-white);
+  font-family: inherit;
+  font-size: 0.82rem;
+  text-align: left;
+}
+.reaction-row-jump:hover {
+  background: var(--veil-2);
+}
+.reaction-row-emoji {
+  font-size: 1rem;
+}
+.reaction-row-time {
+  font-variant-numeric: tabular-nums;
+  color: var(--text-base);
+}
+.reaction-row-remove {
+  appearance: none;
+  border: none;
+  background: none;
+  color: var(--slate);
+  cursor: pointer;
+  font-size: 0.75rem;
+  padding: var(--space-2);
+  border-radius: 6px;
+}
+.reaction-row-remove:hover {
+  color: var(--danger-text, #fca5a5);
+  background: var(--veil-2);
+}
+
+/* --- Comments --------------------------------------------------------------- */
+
+.comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.comment-input {
+  width: 100%;
+  resize: vertical;
+  min-height: 52px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  color: var(--text-white);
+  background: var(--veil-1);
+  border: 1px solid var(--line-2);
+  border-radius: 10px;
+  padding: var(--space-4) var(--space-5);
+}
+.comment-input:focus {
+  outline: none;
+  border-color: var(--line-3);
+}
+.comment-form-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-4);
+}
+.comment-count {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+  margin-right: auto;
+}
+.comment-count--low {
+  color: var(--danger-text, #fca5a5);
+}
+.comment-submit {
+  appearance: none;
+  border: none;
+  border-radius: 20px;
+  background: var(--diamond);
+  color: var(--on-accent);
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: var(--space-3) var(--space-7);
+  cursor: pointer;
+}
+.comment-submit:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.comment-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-height: 220px;
+  overflow-y: auto;
+}
+.comment-row {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  padding: var(--space-4);
+  border-radius: 10px;
+  background: var(--veil-1);
+}
+.comment-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+.comment-text {
+  font-size: 0.85rem;
+  color: var(--text-white);
+  overflow-wrap: anywhere;
+}
+.comment-meta {
+  font-size: 0.68rem;
+  color: var(--text-dim);
+}
+.comment-remove {
+  appearance: none;
+  border: none;
+  background: none;
+  color: var(--slate);
+  cursor: pointer;
+  font-size: 0.75rem;
+  padding: var(--space-1) var(--space-2);
+  border-radius: 6px;
+}
+.comment-remove:hover {
+  color: var(--danger-text, #fca5a5);
+}

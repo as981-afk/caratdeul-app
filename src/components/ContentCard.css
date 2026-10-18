@@ -1,0 +1,36 @@
+/* --- Shared catalogue card extras ------------------------------------------ */
+
+/* Optional meta line under the card title (era / year / type). */
+.card-meta {
+  position: relative;
+  z-index: 2;
+  font-size: 0.68rem;
+  letter-spacing: 0.2px;
+  color: var(--text-bright);
+  margin-top: 2px;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+}
+/* Card text sits on a photo's dark scrim in both themes. */
+[data-theme="light"] .card-meta {
+  color: var(--on-media);
+}
+
+/* A grid of cards. The rows use fixed min-width cards in a scroller; a grid
+   instead lets each cell size its card, matching `.members-grid`. */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
+  gap: var(--space-6);
+  padding-bottom: var(--space-3);
+}
+.card-grid .card {
+  min-width: 0;
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .card-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: var(--space-4);
+  }
+}

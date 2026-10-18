@@ -1,0 +1,279 @@
+/* --- Profile add / edit modal ----------------------------------------------- */
+
+/* Opened over the "Who's watching?" gate, which sits at z-index 200 — above the
+   default modal overlay (100). Lift this overlay so the editor is visible. */
+.modal-overlay--editor {
+  z-index: 300;
+}
+
+.profile-editor {
+  position: relative;
+  width: min(560px, 100%);
+  max-height: calc(100vh - 2rem);
+  max-height: calc(100dvh - 2rem);
+  border-radius: 20px;
+  background: linear-gradient(180deg, #171928 0%, #101220 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.7), 0 2px 12px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: peIn 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+[data-theme="light"] .profile-editor {
+  background: linear-gradient(180deg, var(--surface-1) 0%, var(--surface-2) 100%);
+  border-color: var(--line-1);
+  box-shadow: 0 30px 90px rgba(var(--shadow-rgb), 0.25), 0 2px 12px rgba(var(--shadow-rgb), 0.12);
+}
+@keyframes peIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes peOut {
+  to { opacity: 0; transform: translateY(10px) scale(0.97); }
+}
+.profile-editor--closing {
+  animation: peOut 0.2s ease forwards;
+}
+
+.pe-form {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.pe-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-7);
+  padding: 20px 56px var(--space-7) var(--space-10);
+  border-bottom: 1px solid var(--line-1);
+}
+.pe-preview {
+  width: 60px;
+  height: 60px;
+  font-size: 1.6rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+.pe-header-text {
+  min-width: 0;
+}
+.pe-title {
+  margin: 0;
+  font-family: "Fraunces", serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--diamond);
+}
+.pe-subtitle {
+  margin: 2px 0 0;
+  font-size: 0.8rem;
+  color: var(--slate);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pe-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+  padding: var(--space-8) var(--space-10);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-10);
+}
+.pe-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+.pe-section-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.pe-label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.pe-count {
+  font-size: 0.68rem;
+  letter-spacing: 0;
+  color: var(--slate);
+}
+.pe-input {
+  width: 100%;
+  padding: var(--space-5) var(--space-7);
+  border-radius: 10px;
+  border: 1px solid var(--line-2);
+  background: var(--veil-1);
+  color: var(--diamond);
+  font-size: 0.95rem;
+  font-family: "Inter", sans-serif;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+.pe-input:focus {
+  border-color: var(--rose);
+  background: var(--veil-2);
+}
+.pe-error {
+  padding: var(--space-4) var(--space-6);
+  border-radius: 9px;
+  background: rgba(220, 80, 80, 0.14);
+  border: 1px solid rgba(220, 80, 80, 0.4);
+  color: var(--danger-text);
+  font-size: 0.8rem;
+}
+
+/* Avatar grid */
+.pe-avatar-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
+  gap: var(--space-4);
+}
+.pe-avatar {
+  appearance: none;
+  position: relative;
+  border: 2px solid transparent;
+  background: var(--veil-1);
+  border-radius: 14px;
+  padding: 0;
+  aspect-ratio: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.pe-avatar:hover {
+  transform: translateY(-2px);
+}
+.pe-avatar--active {
+  border-color: var(--rose);
+  box-shadow: 0 0 0 3px rgba(242, 169, 193, 0.2);
+}
+.pe-avatar:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+.pe-avatar-icon {
+  width: 72%;
+  height: 72%;
+  font-size: 1.2rem;
+}
+
+.pe-footer {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  padding: var(--space-6) var(--space-10);
+  border-top: 1px solid var(--line-1);
+  background: var(--glass-faint);
+}
+.pe-footer-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+.pe-footer-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-left: auto;
+}
+.pe-confirm-text {
+  font-size: 0.8rem;
+  color: var(--text-base);
+}
+.pe-btn {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-family: "Inter", sans-serif;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: var(--veil-2);
+  color: var(--text-bright);
+  transition: background 0.15s, transform 0.15s;
+}
+.pe-btn:hover {
+  background: var(--veil-3);
+  transform: translateY(-1px);
+}
+.pe-btn:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+.pe-btn--primary {
+  background: linear-gradient(135deg, var(--rose), var(--serenity));
+  color: var(--on-accent);
+}
+.pe-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+  transform: none;
+}
+.pe-btn--danger {
+  background: rgba(220, 80, 80, 0.85);
+  color: #fff;
+}
+.pe-btn--danger-ghost {
+  background: transparent;
+  color: var(--danger-text);
+  padding-left: 0;
+}
+.pe-btn--danger-ghost:hover {
+  background: transparent;
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .profile-editor {
+    width: 100%;
+    border-radius: 16px;
+  }
+  .pe-header {
+    padding: var(--space-8) 52px var(--space-5) var(--space-8);
+  }
+  .pe-body {
+    padding: var(--space-7) var(--space-8);
+  }
+  .pe-footer {
+    padding: var(--space-5) var(--space-8);
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .pe-footer-right {
+    margin-left: 0;
+    justify-content: flex-end;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-editor,
+  .profile-editor--closing {
+    animation: none;
+  }
+  .pe-avatar,
+  .pe-btn {
+    transition: none;
+  }
+}

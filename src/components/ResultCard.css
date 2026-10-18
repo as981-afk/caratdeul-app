@@ -1,0 +1,136 @@
+/* --- Shareable quiz result card -------------------------------------------- */
+
+.result-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+/* The on-screen preview mirrors what utils/shareCard.js paints to the canvas:
+   a brand-gradient frame around a dark inner panel. --c1/--c2 are set inline. */
+.result-card-art {
+  position: relative;
+  width: min(100%, 340px);
+  aspect-ratio: 4 / 5;
+  border-radius: 20px;
+  padding: var(--space-9) var(--space-7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-3);
+  background: linear-gradient(160deg, var(--c1), var(--c2));
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+}
+.result-card-art::before {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border-radius: 14px;
+  background: rgba(10, 11, 18, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+[data-theme="light"] .result-card-art::before {
+  background: rgba(var(--surface-rgb), 0.9);
+}
+.result-card-art > * {
+  position: relative;
+  z-index: 1;
+}
+
+.result-card-kicker {
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  color: var(--text-dim);
+  margin-top: var(--space-3);
+}
+.result-card-emoji {
+  font-size: 3rem;
+  line-height: 1;
+  margin: var(--space-5) 0 var(--space-2);
+}
+.result-card-quiz {
+  font-family: "Fraunces", serif;
+  font-size: 0.9rem;
+  color: var(--text-base);
+}
+.result-card-big {
+  font-family: "Fraunces", serif;
+  font-weight: 800;
+  font-size: 1.6rem;
+  line-height: 1.15;
+  color: var(--diamond);
+  max-width: 100%;
+}
+.result-card-sub {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--c1);
+}
+.result-card-lines {
+  list-style: none;
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: 0.8rem;
+  color: var(--text-base);
+}
+.result-card-footer {
+  margin-top: auto;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+.result-card-share {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-4);
+}
+.result-card-btn {
+  appearance: none;
+  border: 1px solid var(--overlay-border);
+  background: var(--overlay-bg);
+  color: var(--text-white);
+  border-radius: 22px;
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: var(--space-3) var(--space-6);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.result-card-btn:hover:not(:disabled) {
+  border-color: var(--line-3);
+  background: var(--veil-2);
+}
+.result-card-btn--primary {
+  background: var(--diamond);
+  color: var(--on-accent);
+  border-color: transparent;
+}
+.result-card-btn--primary:hover:not(:disabled) {
+  background: #fff;
+  border-color: transparent;
+}
+.result-card-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.result-card-status {
+  min-height: 1em;
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--positive-text, #46d369);
+}

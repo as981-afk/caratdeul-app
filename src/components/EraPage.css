@@ -1,0 +1,247 @@
+/* --- Era / album timeline page ----------------------------------------------- */
+
+.era-page {
+  padding-bottom: var(--space-9);
+}
+.era-page-bar {
+  padding: var(--space-7) 40px 0;
+}
+.era-page-back {
+  appearance: none;
+  border: 1px solid var(--overlay-border);
+  background: var(--overlay-bg);
+  color: var(--text-white);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-family: inherit;
+  padding: var(--space-2) var(--space-5);
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+.era-page-back:hover {
+  border-color: var(--line-3);
+}
+.era-page-back:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+
+.era-page-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-5);
+  flex-wrap: wrap;
+  padding: var(--space-7) 40px var(--space-6);
+}
+.era-page-title {
+  margin: 0;
+  font-family: "Fraunces", serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+.era-page-count {
+  font-size: 0.75rem;
+  color: var(--slate);
+}
+
+/* Timeline ------------------------------------------------------------------- */
+
+.era-timeline {
+  padding: 0 40px var(--space-8);
+  overflow-x: auto;
+}
+.era-timeline-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: var(--space-4);
+  position: relative;
+}
+/* The through-line that turns the chips into one timeline. */
+.era-timeline-list::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: var(--line-2);
+}
+
+.era-slot {
+  position: relative;
+  appearance: none;
+  font-family: inherit;
+  cursor: pointer;
+  flex-shrink: 0;
+  min-width: 132px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: var(--space-4) var(--space-5);
+  border-radius: 12px;
+  border: 1px solid var(--overlay-border);
+  background: var(--obsidian);
+  color: var(--text-medium);
+  transition: border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+.era-slot-bar {
+  width: 100%;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--c1), var(--c2));
+  opacity: 0.6;
+  margin-bottom: var(--space-2);
+}
+.era-slot:hover {
+  color: var(--text-white);
+  border-color: var(--line-3);
+  transform: translateY(-2px);
+}
+.era-slot:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+.era-slot.is-active {
+  color: var(--on-media);
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.4);
+}
+.era-slot.is-active .era-slot-bar {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.85);
+}
+.era-slot-year {
+  font-size: 0.62rem;
+  letter-spacing: 1px;
+  color: inherit;
+  opacity: 0.75;
+}
+.era-slot-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.era-slot-count {
+  font-size: 0.62rem;
+  color: var(--slate);
+}
+.era-slot.is-active .era-slot-count {
+  color: var(--on-media);
+}
+
+/* Selected era --------------------------------------------------------------- */
+
+.era-detail {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-6);
+  flex-wrap: wrap;
+  margin: 0 40px var(--space-4);
+  padding: var(--space-8);
+  border-radius: 18px;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+}
+.era-detail-body {
+  position: relative;
+  z-index: 1;
+  min-width: 260px;
+  flex: 1;
+}
+.era-detail-year {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  color: var(--on-media);
+  opacity: 0.85;
+}
+.era-detail-title {
+  margin: var(--space-2) 0 var(--space-3);
+  font-family: "Fraunces", serif;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  color: var(--on-media);
+}
+.era-detail-blurb {
+  margin: 0;
+  max-width: 68ch;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--on-media);
+  opacity: 0.9;
+}
+.era-detail-count {
+  position: relative;
+  z-index: 1;
+  font-size: 0.72rem;
+  color: var(--on-media);
+  background: rgba(10, 11, 18, 0.45);
+  border-radius: 999px;
+  padding: var(--space-2) var(--space-5);
+  white-space: nowrap;
+}
+
+.era-empty {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  padding: var(--space-9) 40px var(--space-6);
+}
+
+/* The era page owns its own page padding; the grid follows the detail panel. */
+.era-grid {
+  padding: var(--space-8) 40px var(--space-3);
+}
+
+@media (max-width: 768px) {
+  .era-page-bar,
+  .era-page-head,
+  .era-timeline {
+    padding-left: var(--space-9);
+    padding-right: var(--space-9);
+  }
+  .era-detail {
+    margin-left: var(--space-9);
+    margin-right: var(--space-9);
+    padding: var(--space-7);
+  }
+  .era-grid,
+  .era-empty {
+    padding-left: var(--space-9);
+    padding-right: var(--space-9);
+  }
+}
+@media (max-width: 600px) {
+  .era-page-bar,
+  .era-page-head,
+  .era-timeline,
+  .era-grid,
+  .era-empty {
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
+  }
+  .era-detail {
+    margin-left: var(--space-6);
+    margin-right: var(--space-6);
+    padding: var(--space-6);
+  }
+  .era-detail-count {
+    align-self: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .era-timeline {
+    scroll-behavior: auto;
+  }
+  .era-slot {
+    transition: none;
+  }
+  .era-slot:hover {
+    transform: none;
+  }
+}

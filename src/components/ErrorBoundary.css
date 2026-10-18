@@ -1,0 +1,71 @@
+/* --- Error boundary ---------------------------------------------------------- */
+
+.error-boundary {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-10);
+  background: radial-gradient(circle at 30% 20%, rgba(242, 169, 193, 0.18), transparent 45%),
+    radial-gradient(circle at 70% 80%, rgba(159, 195, 232, 0.16), transparent 45%),
+    var(--obsidian);
+}
+.error-boundary-card {
+  width: min(420px, 100%);
+  text-align: center;
+  border-radius: 14px;
+  padding: 40px var(--space-12);
+  background: var(--obsidian-2);
+  border: 1px solid var(--overlay-border);
+  box-shadow: 0 20px 60px var(--card-shadow);
+}
+.error-boundary-logo {
+  font-family: "Fraunces", serif;
+  font-weight: 900;
+  font-size: 1.25rem;
+  letter-spacing: 2px;
+  background: linear-gradient(90deg, var(--rose), var(--serenity));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: var(--space-8);
+}
+.error-boundary-title {
+  font-family: "Fraunces", serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  margin: 0 0 var(--space-4);
+}
+.error-boundary-text {
+  color: var(--text-base);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 0 0 var(--space-10);
+}
+.error-boundary-btn {
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: var(--space-4) var(--space-8);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--on-accent);
+  background: linear-gradient(90deg, var(--rose), var(--serenity));
+  margin: 0 var(--space-2);
+}
+.error-boundary-btn:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+.error-boundary-btn--reload {
+  background: var(--overlay-bg);
+  color: var(--text-white);
+  border: 1px solid var(--overlay-border);
+}
+/* Pastel duo is too faint for text on a light page — deepen it there. */
+[data-theme="light"] .error-boundary-logo {
+  background: linear-gradient(90deg, #ab3d70, #38699c);
+  -webkit-background-clip: text;
+  background-clip: text;
+}

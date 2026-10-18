@@ -1,0 +1,508 @@
+.login-page {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--obsidian);
+  z-index: 200;
+}
+/* Cross-screen transition between Log In / Create Account / picker. Opacity
+   only — a transform here would make the fixed .login-page child position
+   itself relative to this wrapper instead of the viewport. The slide comes
+   from the card's own entry animation. */
+.auth-screen {
+  animation: authScreenIn 260ms ease both;
+}
+@keyframes authScreenIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.login-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.login-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.4;
+}
+.login-glow--rose {
+  width: 500px;
+  height: 500px;
+  background: var(--rose);
+  top: -10%;
+  right: -5%;
+  animation: loginFloat1 8s ease-in-out infinite alternate;
+}
+.login-glow--serenity {
+  width: 450px;
+  height: 450px;
+  background: var(--serenity);
+  bottom: -10%;
+  left: -5%;
+  animation: loginFloat2 10s ease-in-out infinite alternate;
+}
+@keyframes loginFloat1 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-40px, 30px) scale(1.1); }
+}
+@keyframes loginFloat2 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(30px, -40px) scale(1.1); }
+}
+.login-card {
+  position: relative;
+  z-index: 1;
+  width: min(420px, 90%);
+  background: linear-gradient(160deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px;
+  padding: var(--space-13) 36px 36px;
+  backdrop-filter: blur(24px);
+  box-shadow: 0 28px 80px rgba(0,0,0,0.55);
+  text-align: center;
+  animation: modalSlideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+[data-theme="light"] .login-card {
+  background: linear-gradient(160deg, rgba(var(--surface-rgb), 0.85), rgba(var(--surface-rgb), 0.65));
+  border: 1px solid var(--line-1);
+  box-shadow: 0 28px 80px rgba(var(--shadow-rgb), 0.22);
+}
+[data-theme="light"] .login-glow--rose {
+  opacity: 0.15;
+}
+[data-theme="light"] .login-glow--serenity {
+  opacity: 0.15;
+}
+.login-logo {
+  font-family: "Fraunces", serif;
+  font-weight: 800;
+  font-size: 2.2rem;
+  letter-spacing: 0.5px;
+  background: linear-gradient(100deg, var(--rose), var(--serenity));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: var(--space-2);
+}
+.login-subtitle {
+  color: var(--slate);
+  font-size: 0.85rem;
+  margin: 0 0 var(--space-12);
+}
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+.login-field {
+  text-align: left;
+}
+.login-field label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: var(--space-2);
+}
+.login-field input {
+  width: 100%;
+  padding: var(--space-5) var(--space-7);
+  border-radius: 8px;
+  border: 1px solid var(--overlay-border);
+  background: var(--overlay-bg);
+  color: var(--diamond);
+  font-size: 0.9rem;
+  font-family: "Inter", sans-serif;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  box-sizing: border-box;
+}
+.login-field input::placeholder {
+  color: var(--slate);
+}
+.login-field input:focus {
+  border-color: var(--rose);
+  background: var(--veil-2);
+}
+.login-error {
+  color: var(--danger-text);
+  font-size: 0.8rem;
+  text-align: left;
+}
+.login-btn {
+  width: 100%;
+  padding: var(--space-6);
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--rose), var(--serenity));
+  color: var(--on-accent);
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-family: "Inter", sans-serif;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  margin-top: var(--space-1);
+  box-shadow: 0 4px 16px rgba(242, 169, 193, 0.3);
+  letter-spacing: 0.3px;
+}
+.login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(242, 169, 193, 0.4);
+}
+.login-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(242, 169, 193, 0.2);
+}
+.login-btn:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 3px;
+}
+.login-hint {
+  margin-top: var(--space-10);
+  font-size: 0.72rem;
+  color: var(--slate);
+  opacity: 0.7;
+}
+.login-switch {
+  margin-top: var(--space-9);
+  font-size: 0.8rem;
+  color: var(--slate);
+}
+.login-switch-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  color: var(--rose-text);
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-family: "Inter", sans-serif;
+  transition: color 0.15s;
+}
+.login-switch-btn:hover {
+  color: var(--serenity-text);
+}
+.login-switch-btn:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.login-notice {
+  color: var(--positive-text);
+  font-size: 0.8rem;
+  text-align: left;
+  margin-bottom: var(--space-2);
+}
+/* --- "Who's watching?" profile picker ---------------------------------------- */
+
+.login-card--picker {
+  width: min(540px, 94%);
+  padding: 44px 36px var(--space-12);
+}
+.profile-picker-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+  justify-content: center;
+}
+.profile-picker-tile {
+  appearance: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3);
+  border-radius: 14px;
+  font-family: "Inter", sans-serif;
+  transition: transform 0.15s;
+}
+.profile-picker-tile:hover {
+  transform: translateY(-3px);
+}
+.profile-picker-tile:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+.profile-picker-avatar {
+  width: 92px;
+  height: 92px;
+  font-size: 2.3rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  transition: box-shadow 0.15s;
+}
+.profile-picker-tile:hover .profile-picker-avatar {
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.55), 0 0 0 2px var(--rose);
+}
+.profile-picker-name {
+  color: var(--text-base);
+  font-size: 0.8rem;
+  font-weight: 600;
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.profile-picker-tile--add {
+  flex-direction: column;
+}
+.profile-picker-plus {
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  font-weight: 300;
+  color: var(--slate);
+  background: var(--veil-2);
+  border: 2px dashed var(--line-3);
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.profile-picker-tile--add:hover .profile-picker-plus {
+  color: var(--rose-text);
+  border-color: var(--rose);
+  background: rgba(242, 169, 193, 0.08);
+}
+.login-alt-btn,
+.login-back-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--slate);
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+  transition: color 0.15s;
+}
+.login-alt-btn {
+  margin-top: var(--space-10);
+}
+.login-alt-btn:hover,
+.login-back-btn:hover {
+  color: var(--rose-text);
+}
+.login-back-btn {
+  display: block;
+  margin: -16px auto var(--space-8);
+}
+.login-card--picker .login-subtitle {
+  margin-bottom: var(--space-11);
+}
+
+/* --- Log In / Create Account fields ------------------------------------------ */
+
+.login-password {
+  position: relative;
+}
+.login-password input {
+  padding-right: 68px;
+}
+.login-password-toggle {
+  position: absolute;
+  top: 50%;
+  right: var(--space-5);
+  transform: translateY(-50%);
+  appearance: none;
+  border: none;
+  background: transparent;
+  padding: 4px 6px;
+  color: var(--slate);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  font-family: "Inter", sans-serif;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: color 0.15s, background 0.15s;
+}
+.login-password-toggle:hover {
+  color: var(--rose-text);
+}
+.login-password-toggle:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 1px;
+}
+.login-forgot {
+  appearance: none;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin-top: calc(var(--space-6) * -1);
+  align-self: flex-start;
+  cursor: pointer;
+  color: var(--slate);
+  font-size: 0.76rem;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+  transition: color 0.15s;
+}
+.login-forgot:hover {
+  color: var(--rose-text);
+}
+.login-forgot:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.login-field-error {
+  display: block;
+  margin-top: 5px;
+  color: var(--danger-text);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-align: left;
+}
+.login-field-hint {
+  display: block;
+  margin-top: 5px;
+  color: var(--slate);
+  font-size: 0.68rem;
+  text-align: left;
+}
+
+/* Password strength meter ----------------------------------------------------- */
+
+.password-strength {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: 7px;
+}
+.password-strength-bars {
+  display: inline-flex;
+  gap: 4px;
+}
+.password-strength-bars span {
+  width: 34px;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--overlay-bg);
+}
+.password-strength-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: var(--slate);
+}
+.password-strength--1 .password-strength-bars span:nth-child(1) {
+  background: var(--danger-text);
+}
+.password-strength--1 .password-strength-label {
+  color: var(--danger-text);
+}
+.password-strength--2 .password-strength-bars span:nth-child(-n + 2) {
+  background: var(--gold);
+}
+.password-strength--2 .password-strength-label {
+  color: var(--gold);
+}
+.password-strength--3 .password-strength-bars span {
+  background: var(--positive-text);
+}
+.password-strength--3 .password-strength-label {
+  color: var(--positive-text);
+}
+
+/* Create Account screen -------------------------------------------------------- */
+
+.login-card--signup {
+  width: min(460px, 94%);
+  max-height: 92vh;
+  overflow-y: auto;
+  padding: var(--space-11) 36px var(--space-10);
+}
+.login-card--signup .login-form {
+  gap: var(--space-7);
+}
+.signup-optional {
+  margin-left: var(--space-3);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: none;
+  color: var(--slate);
+  opacity: 0.85;
+}
+.signup-avatar-field > label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: var(--space-3);
+}
+.signup-avatar-step {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+.signup-avatar-preview {
+  width: 56px;
+  height: 56px;
+  font-size: 1.3rem;
+  border: 2px solid var(--line-2);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+.signup-avatar-btn {
+  appearance: none;
+  border: 1px dashed var(--line-3);
+  background: var(--veil-1);
+  color: var(--text-bright);
+  font-family: "Inter", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: var(--space-4) var(--space-7);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.signup-avatar-btn:hover {
+  border-color: rgba(242, 169, 193, 0.5);
+  background: rgba(242, 169, 193, 0.08);
+  color: var(--rose-text);
+}
+.signup-avatar-btn:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-screen {
+    animation: none;
+  }
+  .profile-picker-tile,
+  .profile-picker-avatar,
+  .profile-picker-plus {
+    transition: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .login-card {
+    padding: var(--space-9) var(--space-8) var(--space-8);
+  }
+  .login-card--picker {
+    padding: var(--space-9) var(--space-8) var(--space-7);
+  }
+  .profile-picker-grid {
+    gap: var(--space-5);
+  }
+  .profile-picker-avatar,
+  .profile-picker-plus {
+    width: 76px;
+    height: 76px;
+  }
+}

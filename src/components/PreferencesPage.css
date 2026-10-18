@@ -1,0 +1,164 @@
+/* --- Preferences page ------------------------------------------------------- */
+
+.preferences-page {
+  padding: var(--space-11) 40px var(--space-9);
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+.preferences-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-5);
+  flex-wrap: wrap;
+}
+.preferences-title {
+  font-family: "Fraunces", serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin: 0;
+}
+.preferences-saved {
+  font-size: 0.75rem;
+  color: var(--positive-text, #46d369);
+  min-height: 1em;
+}
+.preferences-back {
+  margin-left: auto;
+  appearance: none;
+  border: 1px solid var(--overlay-border);
+  background: var(--overlay-bg);
+  color: var(--text-white);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-family: inherit;
+  padding: var(--space-2) var(--space-5);
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+.preferences-back:hover {
+  border-color: var(--line-3);
+}
+.preferences-back:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+
+.preferences-card {
+  background: var(--veil-1);
+  border: 1px solid var(--line-1);
+  border-radius: 16px;
+  padding: var(--space-9) var(--space-10);
+}
+.preferences-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  margin-bottom: var(--space-6);
+}
+.preferences-card-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin: 0;
+}
+
+.preferences-profile {
+  display: flex;
+  align-items: center;
+  gap: var(--space-7);
+  flex-wrap: wrap;
+}
+.preferences-avatar {
+  width: 64px;
+  height: 64px;
+  font-size: 1.6rem;
+}
+.preferences-profile-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.preferences-profile-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--diamond);
+}
+.preferences-profile-sub {
+  font-size: 0.78rem;
+  color: var(--slate);
+}
+.preferences-profile-actions {
+  margin-left: auto;
+  display: flex;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+.preferences-btn {
+  appearance: none;
+  border: 1px solid var(--overlay-border);
+  background: var(--overlay-bg);
+  color: var(--text-white);
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-family: inherit;
+  padding: var(--space-4) var(--space-7);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.preferences-btn:hover {
+  border-color: var(--line-3);
+  background: var(--veil-2);
+}
+.preferences-btn:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+
+.preferences-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-7);
+  padding: var(--space-6) 0;
+  border-top: 1px solid var(--line-1);
+}
+.preferences-row:first-of-type {
+  border-top: none;
+}
+.preferences-row--stack {
+  flex-direction: column;
+  align-items: flex-start;
+}
+.preferences-row-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.preferences-row-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-bright);
+}
+.preferences-row-hint {
+  font-size: 0.76rem;
+  color: var(--slate);
+}
+
+@media (max-width: 600px) {
+  .preferences-page {
+    padding: var(--space-9) var(--space-6) var(--space-7);
+  }
+  .preferences-card {
+    padding: var(--space-8) var(--space-7);
+  }
+  .preferences-profile-actions {
+    margin-left: 0;
+    width: 100%;
+  }
+}

@@ -1,0 +1,43 @@
+/* --- "Who's watching?" profile gate ----------------------------------------- */
+
+.profile-tile-avatar-wrap {
+  position: relative;
+  display: inline-flex;
+}
+.profile-tile-edit {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  color: var(--on-accent);
+  background: linear-gradient(135deg, var(--rose), var(--serenity));
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  border: 2px solid var(--obsidian);
+}
+
+.profile-gate-hint {
+  margin: var(--space-8) 0 0;
+  font-size: 0.76rem;
+  color: var(--slate);
+}
+
+.profile-gate-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-10);
+  flex-wrap: wrap;
+  margin-top: var(--space-10);
+}
+.profile-gate-actions .login-alt-btn {
+  margin-top: 0;
+}
+.profile-gate-manage {
+  color: var(--text-base);
+}

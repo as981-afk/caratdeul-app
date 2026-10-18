@@ -1,0 +1,44 @@
+/* --- My List section -------------------------------------------------------- */
+
+.my-list-section {
+  margin-top: var(--space-2);
+}
+.my-list-section-title {
+  font-size: 0.95rem;
+  margin-bottom: var(--space-4);
+}
+.my-list-viewall {
+  margin-left: auto;
+  appearance: none;
+  border: 1px solid var(--overlay-border);
+  background: var(--overlay-bg);
+  color: var(--text-white);
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-family: inherit;
+  padding: var(--space-2) var(--space-5);
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+.my-list-viewall:hover {
+  border-color: var(--line-3);
+}
+.my-list-viewall:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+.my-list-empty {
+  padding: 34px var(--space-10);
+  border: 1px dashed var(--line-2);
+  border-radius: 12px;
+  color: var(--slate);
+  text-align: center;
+}
+.my-list-empty p {
+  margin: var(--space-1) 0;
+  font-size: 0.9rem;
+}
+.my-list-empty p:first-child {
+  font-weight: 700;
+  color: var(--text-bright);
+}

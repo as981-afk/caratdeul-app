@@ -1,0 +1,317 @@
+.billboard {
+  position: relative;
+  width: 100%;
+  height: 85vh;
+  min-height: 520px;
+  max-height: 750px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1a1035 0%, #0d1b2a 30%, #1b2838 60%, var(--obsidian) 100%);
+}
+.billboard-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 15%;
+}
+.billboard-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.billboard-bg::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 70%;
+  height: 120%;
+  background: radial-gradient(ellipse at center, rgba(242, 169, 193, 0.15), transparent 65%);
+  animation: billboardGlow 8s ease-in-out infinite alternate;
+}
+.billboard-bg::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(0deg, var(--obsidian) 0%, transparent 100%);
+}
+@keyframes billboardGlow {
+  0% { opacity: 0.6; transform: scale(1); }
+  100% { opacity: 1; transform: scale(1.05); }
+}
+.billboard-gradient-left {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(10, 11, 18, 0.95) 0%, rgba(10, 11, 18, 0.4) 35%, transparent 60%);
+}
+.billboard-gradient-bottom {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, var(--obsidian) 0%, rgba(10, 11, 18, 0.6) 30%, transparent 60%);
+}
+.billboard-gradient-right {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(270deg, rgba(10, 11, 18, 0.6) 0%, transparent 40%);
+}
+.billboard-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 70% 40%, transparent 40%, rgba(10, 11, 18, 0.5) 100%);
+}
+.billboard-fade-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(180deg, rgba(10, 11, 18, 0.7) 0%, transparent 100%);
+  z-index: 2;
+}
+.billboard-content {
+  position: relative;
+  z-index: 3;
+  padding: 0 var(--space-13) 80px;
+  max-width: 650px;
+  /* Hero text sits on the photo's dark scrims in both themes. */
+  color: var(--on-media);
+}
+.billboard-tags {
+  display: flex;
+  gap: var(--space-3);
+  margin-bottom: var(--space-7);
+}
+.billboard-tag {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: var(--space-1) var(--space-4);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-base);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+/* Tag chips sit on the photo — keep the dark glass + light text in light mode. */
+[data-theme="light"] .billboard-tag {
+  background: rgba(10, 11, 18, 0.55);
+  color: rgba(255, 255, 255, 0.78);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+.billboard-tag--new {
+  background: linear-gradient(90deg, var(--rose), var(--serenity));
+  color: var(--on-accent);
+  border: none;
+  font-weight: 700;
+}
+.billboard-title {
+  margin: 0 0 var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.billboard-title-top {
+  font-family: "Fraunces", serif;
+  font-weight: 900;
+  font-size: clamp(2.4rem, 5.5vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.5px;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+.billboard-title-sub {
+  font-family: "Fraunces", serif;
+  font-weight: 600;
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  color: var(--rose);
+  letter-spacing: 1px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+.billboard-desc {
+  color: var(--text-medium);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  margin: 0 0 var(--space-7);
+  max-width: 500px;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+}
+.billboard-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: 22px;
+  font-size: 0.78rem;
+}
+.billboard-match {
+  color: #46d369;
+  font-weight: 700;
+}
+.billboard-year,
+.billboard-duration {
+  color: var(--text-dim);
+}
+.billboard-maturity {
+  color: var(--text-dim);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 1px var(--space-2);
+  border-radius: 3px;
+  font-size: 0.68rem;
+}
+[data-theme="light"] .billboard-year,
+[data-theme="light"] .billboard-duration {
+  color: rgba(255, 255, 255, 0.75);
+}
+[data-theme="light"] .billboard-maturity {
+  color: rgba(255, 255, 255, 0.75);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+.billboard-actions {
+  display: flex;
+  gap: var(--space-4);
+}
+.billboard-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  border: none;
+  border-radius: 8px;
+  padding: 13px 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+.billboard-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+}
+.billboard-btn:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 3px;
+}
+.billboard-btn-play {
+  background: var(--diamond);
+  color: var(--obsidian);
+  box-shadow: 0 6px 20px rgba(246, 245, 248, 0.15);
+}
+.billboard-btn-play:hover {
+  background: #fff;
+  box-shadow: 0 10px 32px rgba(246, 245, 248, 0.25);
+}
+[data-theme="light"] .billboard-btn-play {
+  box-shadow: 0 6px 20px rgba(var(--shadow-rgb), 0.3);
+}
+[data-theme="light"] .billboard-btn-play:hover {
+  background: #23263a;
+  box-shadow: 0 10px 32px rgba(var(--shadow-rgb), 0.4);
+}
+.billboard-btn-info {
+  background: rgba(110, 113, 125, 0.75);
+  color: var(--diamond);
+  backdrop-filter: blur(8px);
+}
+.billboard-btn-info:hover {
+  background: rgba(110, 113, 125, 0.55);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+[data-theme="light"] .billboard-btn-info {
+  background: rgba(110, 113, 125, 0.55);
+}
+.info-modal {
+  position: relative;
+  width: min(520px, 100%);
+  max-height: calc(100vh - 2rem);
+  max-height: calc(100dvh - 2rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 14px;
+  padding: 36px var(--space-12) var(--space-12);
+  background: linear-gradient(160deg, rgba(26, 16, 53, 0.95), rgba(13, 27, 42, 0.95));
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+[data-theme="light"] .info-modal {
+  background: linear-gradient(160deg, var(--surface-1) 0%, var(--surface-2) 100%);
+  border: 1px solid var(--line-1);
+  box-shadow: 0 20px 60px rgba(var(--shadow-rgb), 0.25);
+}
+.info-modal-title {
+  font-family: "Fraunces", serif;
+  font-weight: 700;
+  font-size: 1.6rem;
+  margin: 0 0 var(--space-1);
+}
+.info-modal-sub {
+  font-size: 0.78rem;
+  color: var(--slate);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin: 0 0 var(--space-10);
+}
+.info-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.info-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-5) var(--space-7);
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--diamond);
+  background: var(--veil-1);
+  border: 1px solid var(--line-1);
+  transition: background 0.2s, border-color 0.2s;
+}
+.info-link:hover {
+  background: var(--veil-3);
+  border-color: var(--rose);
+}
+.info-link:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+.info-link-label {
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+.info-link-url {
+  font-size: 0.78rem;
+  color: var(--serenity-text);
+  opacity: 0.8;
+}
+/* The photo scrims (gradient-left/right, vignette, fade-top) intentionally stay
+   dark in both themes; the page-side fades use var(--obsidian) and adapt on
+   their own, so no light-mode overrides are needed here. */
+
+@media (max-width: 768px) {
+  .billboard-content {
+    padding: 0 var(--space-9) var(--space-11);
+    max-width: 560px;
+  }
+}
+@media (max-width: 600px) {
+  .billboard-content {
+    padding: 0 var(--space-6) var(--space-10);
+  }
+  .billboard-actions {
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+  .billboard-btn {
+    padding: var(--space-5) var(--space-8);
+    font-size: 0.9rem;
+  }
+}
+

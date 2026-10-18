@@ -1,0 +1,167 @@
+.mv-modal {
+  position: relative;
+  width: min(680px, 100%);
+  max-height: calc(100vh - 2rem);
+  max-height: calc(100dvh - 2rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 14px;
+  background: linear-gradient(160deg, var(--c1), var(--c2)),
+    linear-gradient(180deg, rgba(10, 11, 18, 0.2), rgba(10, 11, 18, 0.9));
+  background-blend-mode: overlay;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+.mv-modal {
+  animation: modalSlideIn 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+/* Songs with a synced-lyrics panel need room to sit the panel beside the video. */
+.mv-modal:has(.lyrics-panel) {
+  width: min(1040px, 100%);
+}
+[data-theme="light"] .mv-modal {
+  background: linear-gradient(160deg, var(--c1), var(--c2)),
+    linear-gradient(180deg, rgba(var(--surface-rgb), 0.6), rgba(var(--surface-rgb), 0.9));
+  box-shadow: 0 20px 60px rgba(var(--shadow-rgb), 0.3);
+}
+.mv-modal-info {
+  padding: var(--space-10) var(--space-11) var(--space-11);
+}
+.mv-modal-meta {
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+  margin-bottom: var(--space-4);
+}
+.mv-modal-year {
+  font-size: 0.65rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gold-text);
+  background: rgba(10, 11, 18, 0.4);
+  padding: var(--space-1) var(--space-4);
+  border-radius: 20px;
+}
+.mv-modal-album {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+}
+.mv-modal-title {
+  font-family: "Fraunces", serif;
+  font-weight: 700;
+  font-size: 1.6rem;
+  margin: 0 0 var(--space-5);
+}
+.mv-modal-desc {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--text-medium);
+  margin: 0 0 var(--space-9);
+}
+.mv-modal-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--diamond);
+  color: var(--obsidian);
+  padding: var(--space-4) var(--space-9);
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: transform 0.15s, opacity 0.15s;
+}
+.mv-modal-link:hover {
+  transform: translateY(-1px);
+  opacity: 0.9;
+}
+.mv-modal-link:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+[data-theme="light"] .mv-modal-year {
+  background: rgba(var(--ink-rgb), 0.08);
+}
+.mv-modal-meta {
+  align-items: center;
+}
+.mv-modal-meta .heart-btn {
+  position: static;
+  margin-left: auto;
+}
+/* Right-aligned cluster: watched toggle + favourite heart. */
+.mv-modal-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-left: auto;
+}
+.mv-modal-actions .heart-btn {
+  margin-left: 0;
+}
+.watched-btn {
+  appearance: none;
+  border: 1px solid var(--overlay-border);
+  background: var(--overlay-bg);
+  color: var(--text-medium);
+  font: inherit;
+  font-size: 0.7rem;
+  letter-spacing: 0.4px;
+  padding: var(--space-2) var(--space-5);
+  border-radius: 20px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+.watched-btn:hover {
+  color: var(--text-white);
+  border-color: var(--line-3);
+}
+.watched-btn:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+.watched-btn--on {
+  color: var(--positive-text);
+  border-color: var(--positive-text);
+  background: rgba(74, 222, 128, 0.12);
+}
+.watched-btn--on:hover {
+  color: var(--positive-text);
+  border-color: var(--positive-text);
+}
+/* Poster fallback for a clip that has no playable id. */
+.mv-modal-fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-9) var(--space-11) 0;
+}
+.mv-modal-fallback-img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 8px;
+  background: var(--overlay-bg);
+}
+.mv-modal-fallback-note {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-medium);
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .mv-modal-info {
+    padding: var(--space-7) var(--space-8) var(--space-8);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mv-modal {
+    animation: none;
+  }
+}

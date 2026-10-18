@@ -1,0 +1,315 @@
+/* --- Video player ----------------------------------------------------------- */
+
+/* Video + optional lyrics panel. Without lyrics this is a plain block; with them
+   (.video-player-layout--split) the panel sits beside the video on wide screens
+   and moves underneath it on narrow ones. */
+.video-player-layout {
+  display: block;
+}
+.video-player-layout--split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(240px, 38%, 320px);
+  align-items: stretch;
+}
+
+.video-player {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: 14px 14px 0 0;
+  overflow: hidden;
+}
+/* Beside the panel the video only rounds its own top-left corner. */
+.video-player-layout--split > .video-player {
+  border-radius: 14px 0 0 0;
+}
+/* `contain: size` stops the panel's content from inflating the row: the 16:9
+   video sets the height and the panel stretches to match, scrolling inside. */
+.video-player-layout--split > .lyrics-panel {
+  contain: size;
+  border-radius: 0 14px 0 0;
+  border-left: 1px solid var(--line-2);
+}
+.video-player-media > iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+/* In fullscreen the 16:9 box fills the screen instead of the other way round. */
+.video-player:fullscreen {
+  aspect-ratio: auto;
+  height: 100vh;
+  border-radius: 0;
+}
+
+/* Help trigger, always available even before playback starts. */
+.video-player-help-fab {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 4;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+  background: rgba(10, 11, 18, 0.55);
+  color: #fff;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.video-player-help-fab:hover {
+  background: rgba(10, 11, 18, 0.8);
+  border-color: #fff;
+}
+.video-player-help-fab:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+
+/* Custom control bar: progress + play/mute/volume/fullscreen. */
+.video-player-controls {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 18px 12px 10px;
+  background: linear-gradient(180deg, rgba(10, 11, 18, 0), rgba(10, 11, 18, 0.82));
+  color: #fff;
+}
+.video-player-scrub {
+  appearance: none;
+  border: none;
+  background: none;
+  padding: 6px 0;
+  width: 100%;
+  cursor: pointer;
+}
+.video-player-scrub-track {
+  display: block;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.28);
+  overflow: hidden;
+  transition: height 0.15s ease;
+}
+.video-player-scrub:hover .video-player-scrub-track,
+.video-player-scrub:focus-visible .video-player-scrub-track {
+  height: 7px;
+}
+.video-player-scrub-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--rose), var(--serenity));
+  transition: width 0.35s linear;
+}
+.video-player-scrub:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+  border-radius: 999px;
+}
+
+.video-player-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.video-player-btn {
+  appearance: none;
+  border: none;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.video-player-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+.video-player-btn:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+.video-player-btn svg {
+  width: 15px;
+  height: 15px;
+}
+.video-player-volume {
+  min-width: 34px;
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+  opacity: 0.85;
+}
+.video-player-spacer {
+  flex: 1;
+}
+
+/* Transient feedback for a keyboard action (play, mute, seek, volume…). */
+.video-player-osd {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  pointer-events: none;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: rgba(10, 11, 18, 0.72);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  animation: playerOsdIn 0.16s ease both;
+}
+@keyframes playerOsdIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* "?" overlay. */
+.video-player-help {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(6, 7, 12, 0.82);
+  animation: playerHelpIn 0.18s ease both;
+}
+@keyframes playerHelpIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.video-player-help-panel {
+  width: min(360px, 100%);
+  padding: 14px 16px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 12px;
+  background: rgba(18, 16, 32, 0.96);
+  color: #fff;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+}
+.video-player-help-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.video-player-help-close {
+  appearance: none;
+  border: none;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.7rem;
+}
+.video-player-help-close:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+.video-player-help-close:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+.video-player-help-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.video-player-help-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.82rem;
+}
+.video-player-help-keys {
+  display: inline-flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.video-player-help-keys kbd {
+  min-width: 22px;
+  padding: 2px 7px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.14);
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-align: center;
+}
+.video-player-help-label {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Narrow screens: the lyrics panel collapses underneath the video and caps its
+   height, scrolling internally instead of pushing the modal's info down. */
+@media (max-width: 820px) {
+  .video-player-layout--split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .video-player-layout--split > .video-player {
+    border-radius: 14px 14px 0 0;
+  }
+  .video-player-layout--split > .lyrics-panel {
+    contain: none;
+    height: auto;
+    max-height: min(42vh, 300px);
+    border-radius: 0;
+    border-left: none;
+    border-top: 1px solid var(--line-2);
+  }
+}
+
+/* Motion is decoration here — the state change still reads without it. */
+@media (prefers-reduced-motion: reduce) {
+  .video-player-help-fab,
+  .video-player-btn,
+  .video-player-scrub-track,
+  .video-player-scrub-fill {
+    transition: none;
+  }
+  .video-player-osd,
+  .video-player-help {
+    animation: none;
+  }
+}

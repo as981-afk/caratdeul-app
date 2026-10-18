@@ -1,0 +1,62 @@
+/* --- Members index page ----------------------------------------------------- */
+
+.members-page {
+  padding: var(--space-11) 40px var(--space-9);
+}
+.members-page-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-5);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-8);
+}
+.members-page-title {
+  font-family: "Fraunces", serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin: 0;
+}
+.members-page-count {
+  font-size: 0.75rem;
+  color: var(--slate);
+}
+.members-page-back {
+  margin-left: auto;
+  appearance: none;
+  border: 1px solid var(--overlay-border);
+  background: var(--overlay-bg);
+  color: var(--text-white);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-family: inherit;
+  padding: var(--space-2) var(--space-5);
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+.members-page-back:hover {
+  border-color: var(--line-3);
+}
+.members-page-back:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+.members-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--space-6);
+}
+/* Grid cells size the cards instead of the rows' fixed min-width. */
+.members-grid .bias-card {
+  min-width: 0;
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .members-page {
+    padding: var(--space-9) var(--space-6) var(--space-7);
+  }
+  .members-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: var(--space-4);
+  }
+}

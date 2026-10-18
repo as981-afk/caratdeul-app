@@ -1,0 +1,120 @@
+/* --- Fancam focus chip bar --------------------------------------------------- */
+
+.fancam-focus {
+  padding: var(--space-11) 40px 0;
+}
+.fancam-focus-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-6);
+}
+.fancam-focus-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+.fancam-focus-hint {
+  font-size: 0.72rem;
+  color: var(--slate);
+}
+
+.fancam-focus-chips {
+  display: flex;
+  gap: var(--space-4);
+  overflow-x: auto;
+  padding: 2px 2px var(--space-6);
+  scroll-behavior: smooth;
+}
+
+.fancam-chip {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  appearance: none;
+  font-family: inherit;
+  cursor: pointer;
+  padding: var(--space-2) var(--space-5) var(--space-2) var(--space-2);
+  border-radius: 30px;
+  border: 1px solid var(--overlay-border);
+  background: var(--overlay-bg);
+  color: var(--text-medium);
+  transition: border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+.fancam-chip:hover {
+  border-color: var(--line-3);
+  color: var(--text-white);
+  transform: translateY(-2px);
+}
+.fancam-chip:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+.fancam-chip.is-active {
+  color: var(--on-media);
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+.fancam-chip-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--on-media);
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+}
+.fancam-chip-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+}
+.fancam-chip-name {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.fancam-chip-count {
+  font-size: 0.62rem;
+  color: var(--slate);
+  font-variant-numeric: tabular-nums;
+}
+.fancam-chip.is-active .fancam-chip-count {
+  color: var(--on-media);
+}
+
+@media (max-width: 768px) {
+  .fancam-focus {
+    padding: var(--space-9) var(--space-9) 0;
+  }
+}
+@media (max-width: 600px) {
+  .fancam-focus {
+    padding: var(--space-8) var(--space-6) 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fancam-focus-chips {
+    scroll-behavior: auto;
+  }
+  .fancam-chip {
+    transition: none;
+  }
+  .fancam-chip:hover {
+    transform: none;
+  }
+}

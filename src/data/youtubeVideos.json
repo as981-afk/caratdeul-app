@@ -7,6 +7,24 @@
   },
   "videos": [
     {
+      "id": "qKCQm7gcuhs",
+      "title": "도겸과 정한 〈정답 없는 여행〉 Coming Soon! 🌴",
+      "description": "",
+      "publishedAt": "2026-10-25T15:00:02+00:00",
+      "duration": {
+        "iso": null,
+        "seconds": null
+      },
+      "thumbnails": {
+        "maxres": null,
+        "high": "https://i.ytimg.com/vi/qKCQm7gcuhs/hqdefault.jpg",
+        "medium": "https://i.ytimg.com/vi/qKCQm7gcuhs/mqdefault.jpg",
+        "default": "https://i.ytimg.com/vi/qKCQm7gcuhs/default.jpg"
+      },
+      "viewCount": null,
+      "url": "https://www.youtube.com/watch?v=qKCQm7gcuhs"
+    },
+    {
       "id": "BY4QOKe9Gi4",
       "title": "[Choreography Video] JEONGHAN X JOSHUA (SEVENTEEN) - 12 o'clock",
       "description": "",

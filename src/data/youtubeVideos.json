@@ -7,6 +7,24 @@
   },
   "videos": [
     {
+      "id": "D5Op5mAGUak",
+      "title": "[Choreography Video] JEONGHAN X JOSHUA (SEVENTEEN) - 12 o'clock (Moving ver.)",
+      "description": "",
+      "publishedAt": "2026-10-26T10:59:59+00:00",
+      "duration": {
+        "iso": null,
+        "seconds": null
+      },
+      "thumbnails": {
+        "maxres": null,
+        "high": "https://i.ytimg.com/vi/D5Op5mAGUak/hqdefault.jpg",
+        "medium": "https://i.ytimg.com/vi/D5Op5mAGUak/mqdefault.jpg",
+        "default": "https://i.ytimg.com/vi/D5Op5mAGUak/default.jpg"
+      },
+      "viewCount": null,
+      "url": "https://www.youtube.com/watch?v=D5Op5mAGUak"
+    },
+    {
       "id": "qKCQm7gcuhs",
       "title": "도겸과 정한 〈정답 없는 여행〉 Coming Soon! 🌴",
       "description": "",

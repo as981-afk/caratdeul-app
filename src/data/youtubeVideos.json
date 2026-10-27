@@ -7,6 +7,24 @@
   },
   "videos": [
     {
+      "id": "DRzc0Ncwmuo",
+      "title": "JEONGHAN X JOSHUA (SEVENTEEN) 12 o'clock M/V BEHIND THE SCENES",
+      "description": "",
+      "publishedAt": "2026-10-27T12:59:56+00:00",
+      "duration": {
+        "iso": null,
+        "seconds": null
+      },
+      "thumbnails": {
+        "maxres": null,
+        "high": "https://i.ytimg.com/vi/DRzc0Ncwmuo/hqdefault.jpg",
+        "medium": "https://i.ytimg.com/vi/DRzc0Ncwmuo/mqdefault.jpg",
+        "default": "https://i.ytimg.com/vi/DRzc0Ncwmuo/default.jpg"
+      },
+      "viewCount": null,
+      "url": "https://www.youtube.com/watch?v=DRzc0Ncwmuo"
+    },
+    {
       "id": "a-EmB9j8jtg",
       "title": "[HOSHI TAMTAM] 호시 ‘BOYFRIEND’ 비하인드 (HOSHI 'BOYFRIEND' Production, Practice, and Video Shoot Sketch)",
       "description": "",

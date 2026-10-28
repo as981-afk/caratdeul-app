@@ -7,6 +7,24 @@
   },
   "videos": [
     {
+      "id": "S08KzAC4vDY",
+      "title": "[GOING SEVENTEEN] EP.164 WHO ARE YOU? #1",
+      "description": "",
+      "publishedAt": "2026-10-28T11:58:11+00:00",
+      "duration": {
+        "iso": null,
+        "seconds": null
+      },
+      "thumbnails": {
+        "maxres": null,
+        "high": "https://i.ytimg.com/vi/S08KzAC4vDY/hqdefault.jpg",
+        "medium": "https://i.ytimg.com/vi/S08KzAC4vDY/mqdefault.jpg",
+        "default": "https://i.ytimg.com/vi/S08KzAC4vDY/default.jpg"
+      },
+      "viewCount": null,
+      "url": "https://www.youtube.com/watch?v=S08KzAC4vDY"
+    },
+    {
       "id": "DRzc0Ncwmuo",
       "title": "JEONGHAN X JOSHUA (SEVENTEEN) 12 o'clock M/V BEHIND THE SCENES",
       "description": "",

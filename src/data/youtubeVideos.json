@@ -7,6 +7,42 @@
   },
   "videos": [
     {
+      "id": "dDtGa0HN0AY",
+      "title": "Hello Say it again👋 #JxJ #정한X조슈아 #JOURNEY_INTO_DREAMING",
+      "description": "",
+      "publishedAt": "2026-11-01T13:19:28+00:00",
+      "duration": {
+        "iso": null,
+        "seconds": null
+      },
+      "thumbnails": {
+        "maxres": null,
+        "high": "https://i.ytimg.com/vi/dDtGa0HN0AY/hqdefault.jpg",
+        "medium": "https://i.ytimg.com/vi/dDtGa0HN0AY/mqdefault.jpg",
+        "default": "https://i.ytimg.com/vi/dDtGa0HN0AY/default.jpg"
+      },
+      "viewCount": null,
+      "url": "https://www.youtube.com/watch?v=dDtGa0HN0AY"
+    },
+    {
+      "id": "NQkB7yrecDY",
+      "title": "전하지 못한 말 I love you🎶 #JxJ #정한X조슈아 #JOURNEY_INTO_DREAMING",
+      "description": "",
+      "publishedAt": "2026-11-01T13:10:12+00:00",
+      "duration": {
+        "iso": null,
+        "seconds": null
+      },
+      "thumbnails": {
+        "maxres": null,
+        "high": "https://i.ytimg.com/vi/NQkB7yrecDY/hqdefault.jpg",
+        "medium": "https://i.ytimg.com/vi/NQkB7yrecDY/mqdefault.jpg",
+        "default": "https://i.ytimg.com/vi/NQkB7yrecDY/default.jpg"
+      },
+      "viewCount": null,
+      "url": "https://www.youtube.com/watch?v=NQkB7yrecDY"
+    },
+    {
       "id": "9Ype--bZJ1I",
       "title": "우리 둘이라 괜찮아 Crazy in love crazy in love 🩵🩷 #JxJ #정한X조슈아 #JOURNEY_INTO_DREAMING",
       "description": "",

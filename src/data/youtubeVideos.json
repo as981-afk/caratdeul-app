@@ -7,6 +7,42 @@
   },
   "videos": [
     {
+      "id": "6zapPaYSZxs",
+      "title": "[PREVIEW] SEVENTEEN 2027 SEASON'S GREETINGS SPOT",
+      "description": "",
+      "publishedAt": "2026-11-17T07:59:58+00:00",
+      "duration": {
+        "iso": null,
+        "seconds": null
+      },
+      "thumbnails": {
+        "maxres": null,
+        "high": "https://i.ytimg.com/vi/6zapPaYSZxs/hqdefault.jpg",
+        "medium": "https://i.ytimg.com/vi/6zapPaYSZxs/mqdefault.jpg",
+        "default": "https://i.ytimg.com/vi/6zapPaYSZxs/default.jpg"
+      },
+      "viewCount": null,
+      "url": "https://www.youtube.com/watch?v=6zapPaYSZxs"
+    },
+    {
+      "id": "d0SNagCGWsA",
+      "title": "SEVENTEEN 2027 SEASON'S GREETINGS Assistance Dog Etiquette 🐶🌱",
+      "description": "",
+      "publishedAt": "2026-11-17T02:59:57+00:00",
+      "duration": {
+        "iso": null,
+        "seconds": null
+      },
+      "thumbnails": {
+        "maxres": null,
+        "high": "https://i.ytimg.com/vi/d0SNagCGWsA/hqdefault.jpg",
+        "medium": "https://i.ytimg.com/vi/d0SNagCGWsA/mqdefault.jpg",
+        "default": "https://i.ytimg.com/vi/d0SNagCGWsA/default.jpg"
+      },
+      "viewCount": null,
+      "url": "https://www.youtube.com/watch?v=d0SNagCGWsA"
+    },
+    {
       "id": "U7G2G11laQA",
       "title": "[지금은 뿌재중] 🍊뿌이로그🍊 | Eat with 뿌 | 야식 같이 먹어요🍴",
       "description": "",

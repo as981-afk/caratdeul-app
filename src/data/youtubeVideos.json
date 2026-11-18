@@ -7,6 +7,222 @@
   },
   "videos": [
     {
+      "id": "FZyqm4uJa0c",
+      "title": "[GOING SEVENTEEN] EP.167 도둑 #2 (THIEF #2)",
+      "description": "",
+      "publishedAt": "2026-11-18T11:58:09+00:00",
+      "duration": {
+        "iso": null,
+        "seconds": null
+      },
+      "thumbnails": {
+        "maxres": null,
+        "high": "https://i.ytimg.com/vi/FZyqm4uJa0c/hqdefault.jpg",
+        "medium": "https://i.ytimg.com/vi/FZyqm4uJa0c/mqdefault.jpg",
+        "default": "https://i.ytimg.com/vi/FZyqm4uJa0c/default.jpg"
+      },
+      "viewCount": null,
+      "url": "https://www.youtube.com/watch?v=FZyqm4uJa0c"
+    },
+    {
+      "id": "ljD_HBhKXtU",
+      "title": "[DK TIME] 오늘도겸 #2 | LA에서 잘 먹고 잘 놀기 🎡🎶",
+      "description": "",
+      "publishedAt": "2026-11-18T09:00:01+00:00",
+      "duration": {
+        "iso": null,
+        "seconds": null
+      },
+      "thumbnails": {
+        "maxres": null,
+        "high": "https://i.ytimg.com/vi/ljD_HBhKXtU/hqdefault.jpg",
+        "medium": "https://i.ytimg.com/vi/ljD_HBhKXtU/mqdefault.jpg",
+        "default": "https://i.ytimg.com/vi/ljD_HBhKXtU/default.jpg"
+      },
+      "viewCount": null,
+      "url": "https://www.youtube.com/watch?v=ljD_HBhKXtU"
+    },
+    {
+      "id": "ez9SDexgZ9c",
+      "title": "SEVENTEEN 2027 SEASON'S GREETINGS Mood Film #DINO 🌱☀️",
+      "description": "",
+      "publishedAt": "2026-11-18T08:00:42+00:00",
+      "duration": {
+        "iso": null,
+        "seconds": null
+      },
+      "thumbnails": {
+        "maxres": null,
+        "high": "https://i.ytimg.com/vi/ez9SDexgZ9c/hqdefault.jpg",
+        "medium": "https://i.ytimg.com/vi/ez9SDexgZ9c/mqdefault.jpg",
+        "default": "https://i.ytimg.com/vi/ez9SDexgZ9c/default.jpg"
+      },
+      "viewCount": null,
+      "url": "https://www.youtube.com/watch?v=ez9SDexgZ9c"
+    },
+    {
+      "id": "P4p6pGOL9AQ",
+      "title": "SEVENTEEN 2027 SEASON'S GREETINGS Mood Film #VERNON 🌱☀️",
+      "description": "",
+      "publishedAt": "2026-11-18T08:00:37+00:00",
+      "duration": {
+        "iso": null,
+        "seconds": null
+      },
+      "thumbnails": {
+        "maxres": null,
+        "high": "https://i.ytimg.com/vi/P4p6pGOL9AQ/hqdefault.jpg",
+        "medium": "https://i.ytimg.com/vi/P4p6pGOL9AQ/mqdefault.jpg",
+        "default": "https://i.ytimg.com/vi/P4p6pGOL9AQ/default.jpg"
+      },
+      "viewCount": null,
+      "url": "https://www.youtube.com/watch?v=P4p6pGOL9AQ"
+    },
+    {
+      "id": "GNbxSNP7yew",
+      "title": "SEVENTEEN 2027 SEASON'S GREETINGS Mood Film #SEUNGKWAN 🌱☀️",
+      "description": "",
+      "publishedAt": "2026-11-18T08:00:32+00:00",
+      "duration": {
+        "iso": null,
+        "seconds": null
+      },
+      "thumbnails": {
+        "maxres": null,
+        "high": "https://i.ytimg.com/vi/GNbxSNP7yew/hqdefault.jpg",
+        "medium": "https://i.ytimg.com/vi/GNbxSNP7yew/mqdefault.jpg",
+        "default": "https://i.ytimg.com/vi/GNbxSNP7yew/default.jpg"
+      },
+      "viewCount": null,
+      "url": "https://www.youtube.com/watch?v=GNbxSNP7yew"
+    },
+    {
+      "id": "Qme4tB44xpI",
+      "title": "SEVENTEEN 2027 SEASON'S GREETINGS Mood Film #DK 🌱☀️",
+      "description": "",
+      "publishedAt": "2026-11-18T08:00:23+00:00",
+      "duration": {
+        "iso": null,
+        "seconds": null
+      },
+      "thumbnails": {
+        "maxres": null,
+        "high": "https://i.ytimg.com/vi/Qme4tB44xpI/hqdefault.jpg",
+        "medium": "https://i.ytimg.com/vi/Qme4tB44xpI/mqdefault.jpg",
+        "default": "https://i.ytimg.com/vi/Qme4tB44xpI/default.jpg"
+      },
+      "viewCount": null,
+      "url": "https://www.youtube.com/watch?v=Qme4tB44xpI"
+    },
+    {
+      "id": "VWa8dzmPNlU",
+      "title": "SEVENTEEN 2027 SEASON'S GREETINGS Mood Film #MINGYU 🌱☀️",
+      "description": "",
+      "publishedAt": "2026-11-18T08:00:16+00:00",
+      "duration": {
+        "iso": null,
+        "seconds": null
+      },
+      "thumbnails": {
+        "maxres": null,
+        "high": "https://i.ytimg.com/vi/VWa8dzmPNlU/hqdefault.jpg",
+        "medium": "https://i.ytimg.com/vi/VWa8dzmPNlU/mqdefault.jpg",
+        "default": "https://i.ytimg.com/vi/VWa8dzmPNlU/default.jpg"
+      },
+      "viewCount": null,
+      "url": "https://www.youtube.com/watch?v=VWa8dzmPNlU"
+    },
+    {
+      "id": "saGNUO4zhSA",
+      "title": "SEVENTEEN 2027 SEASON'S GREETINGS Mood Film #THE8 🌱☀️",
+      "description": "",
+      "publishedAt": "2026-11-18T08:00:10+00:00",
+      "duration": {
+        "iso": null,
+        "seconds": null
+      },
+      "thumbnails": {
+        "maxres": null,
+        "high": "https://i.ytimg.com/vi/saGNUO4zhSA/hqdefault.jpg",
+        "medium": "https://i.ytimg.com/vi/saGNUO4zhSA/mqdefault.jpg",
+        "default": "https://i.ytimg.com/vi/saGNUO4zhSA/default.jpg"
+      },
+      "viewCount": null,
+      "url": "https://www.youtube.com/watch?v=saGNUO4zhSA"
+    },
+    {
+      "id": "iAj22Wmgigc",
+      "title": "SEVENTEEN 2027 SEASON'S GREETINGS Mood Film #JUN 🌱☀️",
+      "description": "",
+      "publishedAt": "2026-11-18T08:00:05+00:00",
+      "duration": {
+        "iso": null,
+        "seconds": null
+      },
+      "thumbnails": {
+        "maxres": null,
+        "high": "https://i.ytimg.com/vi/iAj22Wmgigc/hqdefault.jpg",
+        "medium": "https://i.ytimg.com/vi/iAj22Wmgigc/mqdefault.jpg",
+        "default": "https://i.ytimg.com/vi/iAj22Wmgigc/default.jpg"
+      },
+      "viewCount": null,
+      "url": "https://www.youtube.com/watch?v=iAj22Wmgigc"
+    },
+    {
+      "id": "B7PvEfwuhbs",
+      "title": "SEVENTEEN 2027 SEASON'S GREETINGS Mood Film #JOSHUA 🌱☀️",
+      "description": "",
+      "publishedAt": "2026-11-18T07:59:59+00:00",
+      "duration": {
+        "iso": null,
+        "seconds": null
+      },
+      "thumbnails": {
+        "maxres": null,
+        "high": "https://i.ytimg.com/vi/B7PvEfwuhbs/hqdefault.jpg",
+        "medium": "https://i.ytimg.com/vi/B7PvEfwuhbs/mqdefault.jpg",
+        "default": "https://i.ytimg.com/vi/B7PvEfwuhbs/default.jpg"
+      },
+      "viewCount": null,
+      "url": "https://www.youtube.com/watch?v=B7PvEfwuhbs"
+    },
+    {
+      "id": "QJAqtRiKe2c",
+      "title": "SEVENTEEN 2027 SEASON'S GREETINGS Mood Film #JEONGHAN 🌱☀️",
+      "description": "",
+      "publishedAt": "2026-11-18T07:59:55+00:00",
+      "duration": {
+        "iso": null,
+        "seconds": null
+      },
+      "thumbnails": {
+        "maxres": null,
+        "high": "https://i.ytimg.com/vi/QJAqtRiKe2c/hqdefault.jpg",
+        "medium": "https://i.ytimg.com/vi/QJAqtRiKe2c/mqdefault.jpg",
+        "default": "https://i.ytimg.com/vi/QJAqtRiKe2c/default.jpg"
+      },
+      "viewCount": null,
+      "url": "https://www.youtube.com/watch?v=QJAqtRiKe2c"
+    },
+    {
+      "id": "Qh-f1ND-kqM",
+      "title": "SEVENTEEN 2027 SEASON'S GREETINGS Mood Film #SCOUPS 🌱☀️",
+      "description": "",
+      "publishedAt": "2026-11-18T07:59:49+00:00",
+      "duration": {
+        "iso": null,
+        "seconds": null
+      },
+      "thumbnails": {
+        "maxres": null,
+        "high": "https://i.ytimg.com/vi/Qh-f1ND-kqM/hqdefault.jpg",
+        "medium": "https://i.ytimg.com/vi/Qh-f1ND-kqM/mqdefault.jpg",
+        "default": "https://i.ytimg.com/vi/Qh-f1ND-kqM/default.jpg"
+      },
+      "viewCount": null,
+      "url": "https://www.youtube.com/watch?v=Qh-f1ND-kqM"
+    },
+    {
       "id": "6zapPaYSZxs",
       "title": "[PREVIEW] SEVENTEEN 2027 SEASON'S GREETINGS SPOT",
       "description": "",

@@ -7,6 +7,24 @@
   },
   "videos": [
     {
+      "id": "8bUov1GcDxk",
+      "title": "SEVENTEEN 2027 SEASON'S GREETINGS  Visualizer 🐕🌱",
+      "description": "",
+      "publishedAt": "2026-11-19T05:00:36+00:00",
+      "duration": {
+        "iso": null,
+        "seconds": null
+      },
+      "thumbnails": {
+        "maxres": null,
+        "high": "https://i.ytimg.com/vi/8bUov1GcDxk/hqdefault.jpg",
+        "medium": "https://i.ytimg.com/vi/8bUov1GcDxk/mqdefault.jpg",
+        "default": "https://i.ytimg.com/vi/8bUov1GcDxk/default.jpg"
+      },
+      "viewCount": null,
+      "url": "https://www.youtube.com/watch?v=8bUov1GcDxk"
+    },
+    {
       "id": "FZyqm4uJa0c",
       "title": "[GOING SEVENTEEN] EP.167 도둑 #2 (THIEF #2)",
       "description": "",
